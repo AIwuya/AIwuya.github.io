@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>Probabilistic Robotics 阅读笔记 | 丹丹和丫丫的个人空间</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Motion Planning,textbook,robotics,">
+  
+
+  
+  <meta name="description" content="董沅鑫的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"8rGlL6rrpuN3VfdSIrm0rRhD-gzGzoHsz","appkey":"OhkcQ13C4bVojSxY2IhbHo8v","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-8",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+    <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style2.css">
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">AIDANGYA</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/AIwuya/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-02-26
+    </span>
+    
+      <span>
+        | <a href="/categories/Motion-Planning/"><i class="fa fa-bookmark"></i>Motion Planning</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Probabilistic Robotics 阅读笔记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="第一部分基础知识"><a href="#第一部分基础知识" class="headerlink" title="第一部分基础知识"></a>第一部分基础知识</h1><p>Probabilistic Robotics 主要思想就是用概率理论的运算去明确地表示机器人感知和行为的不确定性。</p>
+<h2 id="第二章-递归状态估计"><a href="#第二章-递归状态估计" class="headerlink" title="第二章 递归状态估计"></a>第二章 递归状态估计</h2><h3 id="概率的基本概念"><a href="#概率的基本概念" class="headerlink" title="概率的基本概念"></a>概率的基本概念</h3><p><code>全概率定理</code>（theorem of total probability）</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551189314690.png" alt="1551189314690"></p>
+<p>如果 $p(x|y)$ 或 $p(y)$ 为零，定义二者乘积为零，与其他因子的值无关。</p>
+<p><code>贝叶斯准则</code>（Bayes rule）</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551190098086.png" alt="1551190098086"></p>
+<p>如果 $x$ 是一个希望由 $y$ 推测出来的数值，则概率  $p（x）$ 称为<code>先验概率分布</code>（prior probability distribution）。其中，$y$ 称为数据，也就是传感器测量值。分布$p（x）$总结了在综合数据 $y$ 之前已经有的关于 $x$ 的信息。概率$p（x|y）$称为在 $X$ 上的<code>后验概率分布</code>（posterior probability distribution）。</p>
+<p>贝叶斯准则为利用“逆”条件概率 $p(y|x)$ 和先验概率 $p(x)$ 一起去计算后验概率 $p(x|y)$ 提供了一种方便的方法。</p>
+<p><code>熵</code>（entropy）：$x$ 所携带的期望信息</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551191494617.png" alt="1551191494617"></p>
+<p>用于机器人信息的收集，用以表达机器人在执行具体行动时可能接收到的信息。</p>
+<h3 id="机器人环境交互"><a href="#机器人环境交互" class="headerlink" title="机器人环境交互"></a>机器人环境交互</h3><p>由于传感器有噪声，且很多信号不能直接检测，因此机器人内部保持着关于其环境状态的一个内部置信度。</p>
+<p><code>状态转移概率</code> （state transition probability）:  $p(x_t~|x_t-1,u_t~)$，它指出环境状态作为机器人控制 $u_t$ 的函数如何随着时间变化。</p>
+<p><code>测量概率</code>（measurement probability）:  $p(z_t|x_t)$，指定概率法则，测量$z$由环境状态$x$产生，将测量认为是状态的有噪声预测是恰当的。</p>
+<p>状态转移概率和测量概率一起描述机器人及其环境组成的动态随机系统。时刻 $t$ 的状态随机地依赖 $t-1$ 时刻的状态和控制 $u_t$ ，测量 $z_t$ 随机地依赖时刻 $t$ 的状态。这样的时间生成模型称为 <code>隐马尔可夫模型</code> （Hidden Markov Model， HMM）或 <code>动态贝叶斯网络</code>（Dynamic Bayes Network，DBN）。 </p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551234231689.png" alt="1551234231689"></p>
+<h3 id="置信分布"><a href="#置信分布" class="headerlink" title="置信分布"></a>置信分布</h3><p><code>置信度（belief）</code> ，置信度反映了机器人有关环境状态的内部信息。 概率机器人通过条件概率分布表示置信度，对于真实的状态，置信度分布为每一个可能的假设分配一个概率（或者概率密度值）。用 $bel（x_t）$ 表示状态变量 $x_t$ 的置信度。后验概率时刻 $t$ 下状态  $x_1$ 的概率分布，以所有过去测量  $z_  {1:t} $ 和所有过去控制 $u_{1:t}$ 为条件。</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551244106692.png" alt="1551244106692"></p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551244089076.png" alt="1551244089076"></p>
+<p>式（2.34）称为预测，基于以前状态的后验，在综合时刻 $t$ 的测量之前，预测了时刻 $t$ 的状态。</p>
+<p>状态 $x_1$ 的完整性定义 ：如果没有优于 $x_1$ 的变量影响未来状态的随机发展，就说状态 $x_1$ 是完整的。 </p>
+<h3 id="贝叶斯滤波算法"><a href="#贝叶斯滤波算法" class="headerlink" title="贝叶斯滤波算法"></a>贝叶斯滤波算法</h3><p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1551243232591.png" alt="1551243232591"></p>
+<h3 id="马尔可夫假设"><a href="#马尔可夫假设" class="headerlink" title="马尔可夫假设"></a>马尔可夫假设</h3><p>如果知道当前状态 $x_t$ ，马尔可夫假设设定过去和未来数据都是独立的。</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一部分基础知识"><span class="toc-text">第一部分基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-递归状态估计"><span class="toc-text">第二章 递归状态估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概率的基本概念"><span class="toc-text">概率的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#机器人环境交互"><span class="toc-text">机器人环境交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#置信分布"><span class="toc-text">置信分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#贝叶斯滤波算法"><span class="toc-text">贝叶斯滤波算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#马尔可夫假设"><span class="toc-text">马尔可夫假设</span></a></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/Probabilistic Robotics note/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/textbook/"><i class="fa fa-tags"></i>textbook</a>
+     
+      <a href="/tags/robotics/"><i class="fa fa-tags"></i>robotics</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://morvanzhou.github.io/" target="_blank">莫烦PYTHON</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://spinningup.openai.com/en/latest/index.html" target="_blank">OpenAI in Deep RL</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://www.zhihu.com/people/xiao-ya-84-95/activities" target="_blank">知乎</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: wuya_93@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.jpg" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/国内博士论文阅读笔记/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/List Prediction 相关知识点/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+      <script src="/script.js"></script>
+<script src="/script2.js"></script>
+    
+  </body>
+</html>

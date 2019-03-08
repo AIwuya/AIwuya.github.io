@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>Numpy和pandas学习笔记 | 丹丹和丫丫的个人空间</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Reinforcement Learning,numpy,pandas,">
+  
+
+  
+  <meta name="description" content="董沅鑫的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"8rGlL6rrpuN3VfdSIrm0rRhD-gzGzoHsz","appkey":"OhkcQ13C4bVojSxY2IhbHo8v","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-8",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+    <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style2.css">
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">AIDANGYA</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/AIwuya/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-01
+    </span>
+    
+      <span>
+        | <a href="/categories/Reinforcement-Learning/"><i class="fa fa-bookmark"></i>Reinforcement Learning</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Numpy和pandas学习笔记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="numpy笔记"><a href="#numpy笔记" class="headerlink" title="numpy笔记"></a>numpy笔记</h1><h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><p><code>ndim</code> ：维度</p>
+<p><code>shape</code>： 行数和列数</p>
+<p><code>size</code>： 元素个数</p>
+<p><code>array</code> ：创建数组</p>
+<p><code>dtype</code> ：指定数据类型</p>
+<p><code>empty</code> ：创建数据接近0</p>
+<p><code>linspace</code> ：创建线段</p>
+<p><code>np.max</code> 和 <code>np.min</code> 时可以加个参数axis，0表示找出每列的最值，1表示找出每行的最值。</p>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">A = np.arange(2,14).reshape((3,4)) </span><br><span class="line"></span><br><span class="line"># array([[ 2, 3, 4, 5]</span><br><span class="line">#        [ 6, 7, 8, 9]</span><br><span class="line">#        [10,11,12,13]])</span><br><span class="line">         </span><br><span class="line">print(np.argmin(A))    # 0</span><br><span class="line">print(np.argmax(A))    # 11</span><br></pre></td></tr></table></figure>
+<h2 id="元素打印"><a href="#元素打印" class="headerlink" title="元素打印"></a>元素打印</h2><p>给定一个矩阵A[3,4]，print(A[1])等价于打印第二行，所以numpy里面逐行打印的代码为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for row in A:</span><br><span class="line">    print(row)</span><br><span class="line">&quot;&quot;&quot;    </span><br><span class="line">[ 3,  4,  5, 6]</span><br><span class="line">[ 7,  8,  9, 10]</span><br><span class="line">[11, 12, 13, 14]</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>将矩阵内元素依次打印，<code>flatten</code> 函数将多维的矩阵展开成1行的数列，<code>flat</code> 为一个迭代器，本身具有<code>object</code> 属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">A = np.arange(3,15).reshape((3,4))</span><br><span class="line">         </span><br><span class="line">print(A.flatten())   </span><br><span class="line"># array([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])</span><br><span class="line"></span><br><span class="line">for item in A.flat:</span><br><span class="line">    print(item)</span><br><span class="line">    </span><br><span class="line"># 3</span><br><span class="line"># 4</span><br><span class="line">……</span><br><span class="line"># 14</span><br></pre></td></tr></table></figure>
+<h2 id="矩阵的合并"><a href="#矩阵的合并" class="headerlink" title="矩阵的合并"></a>矩阵的合并</h2><p>np.vstack() —-上下合并</p>
+<p>np.hstack()—-左右合并   </p>
+<p>np.newaxis()—-将数组转化为矩阵形式</p>
+<p>np.concatenate()—-合并操作多个矩阵，其中也可以选择参数axis，0或1</p>
+<h2 id="矩阵的分割"><a href="#矩阵的分割" class="headerlink" title="矩阵的分割"></a>矩阵的分割</h2><p>np.split()—-等量分割</p>
+<p>np.array_split()—-不等量分割</p>
+<p>np.vsplit()    np.hsplit()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">print(np.vsplit(A, 3)) #等于 print(np.split(A, 3, axis=0))</span><br><span class="line"></span><br><span class="line"># [array([[0, 1, 2, 3]]), array([[4, 5, 6, 7]]), array([[ 8,  9, 10, 11]])]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(np.hsplit(A, 2)) #等于 print(np.split(A, 2, axis=1))</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">[array([[0, 1],</span><br><span class="line">       [4, 5],</span><br><span class="line">       [8, 9]]), array([[ 2,  3],</span><br><span class="line">        [ 6,  7],</span><br><span class="line">        [10, 11]])]</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="矩阵copy"><a href="#矩阵copy" class="headerlink" title="矩阵copy"></a>矩阵copy</h2><p>两个复制的区别”=” 和 “copy()”</p>
+<p>= 复制之后有关联</p>
+<p>copy() 复制之后没有关联</p>
+<h1 id="pandas笔记"><a href="#pandas笔记" class="headerlink" title="pandas笔记"></a>pandas笔记</h1><h2 id="两个主要数据结构-Series和DataFrame"><a href="#两个主要数据结构-Series和DataFrame" class="headerlink" title="两个主要数据结构 Series和DataFrame"></a>两个主要数据结构 Series和DataFrame</h2><h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">s = pd.Series([1,3,6,np.nan,44,1])</span><br><span class="line"></span><br><span class="line">print(s)</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">0     1.0</span><br><span class="line">1     3.0</span><br><span class="line">2     6.0</span><br><span class="line">3     NaN</span><br><span class="line">4    44.0</span><br><span class="line">5     1.0</span><br><span class="line">dtype: float64</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dates = pd.date_range(&apos;20160101&apos;,periods=6)</span><br><span class="line">df = pd.DataFrame(np.random.randn(6,4),index=dates,columns=[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;])</span><br><span class="line"></span><br><span class="line">print(df)</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">                   a         b         c         d</span><br><span class="line">2016-01-01 -0.253065 -2.071051 -0.640515  0.613663</span><br><span class="line">2016-01-02 -1.147178  1.532470  0.989255 -0.499761</span><br><span class="line">2016-01-03  1.221656 -2.390171  1.862914  0.778070</span><br><span class="line">2016-01-04  1.473877 -0.046419  0.610046  0.204672</span><br><span class="line">2016-01-05 -1.584752 -0.700592  1.487264 -1.778293</span><br><span class="line">2016-01-06  0.633675 -1.414157 -0.277066 -0.442545</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="pandas选择数据"><a href="#pandas选择数据" class="headerlink" title="pandas选择数据"></a>pandas选择数据</h2><p>根据标签 <code>loc</code>，根据序列 <code>iloc</code> ，混合两种<code>ix</code> </p>
+<h2 id="pandas处理丢失数据"><a href="#pandas处理丢失数据" class="headerlink" title="pandas处理丢失数据"></a>pandas处理丢失数据</h2><p><code>pd.dropna()</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df.dropna(</span><br><span class="line">    axis=0,     # 0: 对行进行操作; 1: 对列进行操作</span><br><span class="line">    how=&apos;any&apos;   # &apos;any&apos;: 只要存在 NaN 就 drop 掉; &apos;all&apos;: 必须全部是 NaN 才 drop </span><br><span class="line">    ) </span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">             A     B     C   D</span><br><span class="line">2013-01-03   8   9.0  10.0  11</span><br><span class="line">2013-01-04  12  13.0  14.0  15</span><br><span class="line">2013-01-05  16  17.0  18.0  19</span><br><span class="line">2013-01-06  20  21.0  22.0  23</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p><code>pd.fillna()</code> </p>
+<p>如果是将 <code>NaN</code> 的值用其他值代替, 比如代替成 <code>0</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.fillna(value=0)</span><br></pre></td></tr></table></figure>
+<p><code>pd.isnull()</code></p>
+<p>判断是否有缺失数据 <code>NaN</code>, 为 <code>True</code> 表示缺失数据:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df.isnull() </span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">                A      B      C      D</span><br><span class="line">2013-01-01  False   True  False  False</span><br><span class="line">2013-01-02  False  False   True  False</span><br><span class="line">2013-01-03  False  False  False  False</span><br><span class="line">2013-01-04  False  False  False  False</span><br><span class="line">2013-01-05  False  False  False  False</span><br><span class="line">2013-01-06  False  False  False  False</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>检测在数据中是否存在 <code>NaN</code>, 如果存在就返回 <code>True</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.any(df.isnull()) == True  </span><br><span class="line"># True</span><br></pre></td></tr></table></figure>
+<h2 id="pandas导入导出数据"><a href="#pandas导入导出数据" class="headerlink" title="pandas导入导出数据"></a>pandas导入导出数据</h2><h3 id="读取csv"><a href="#读取csv" class="headerlink" title="读取csv"></a>读取csv</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd #加载模块</span><br><span class="line"></span><br><span class="line">#读取csv</span><br><span class="line">data = pd.read_csv(&apos;student.csv&apos;)</span><br><span class="line"></span><br><span class="line">#打印出data</span><br><span class="line">print(data)</span><br></pre></td></tr></table></figure>
+<h3 id="将资料存取成pickle"><a href="#将资料存取成pickle" class="headerlink" title="将资料存取成pickle"></a>将资料存取成pickle</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.to_pickle(&apos;student.pickle&apos;)</span><br></pre></td></tr></table></figure>
+<h2 id="pandas合并concat"><a href="#pandas合并concat" class="headerlink" title="pandas合并concat"></a>pandas合并concat</h2><p><code>axis合并方向</code> 注意跟前面numpy不相同</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#numpy笔记"><span class="toc-text">numpy笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本命令"><span class="toc-text">基本命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#元素打印"><span class="toc-text">元素打印</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵的合并"><span class="toc-text">矩阵的合并</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵的分割"><span class="toc-text">矩阵的分割</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵copy"><span class="toc-text">矩阵copy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pandas笔记"><span class="toc-text">pandas笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#两个主要数据结构-Series和DataFrame"><span class="toc-text">两个主要数据结构 Series和DataFrame</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Series"><span class="toc-text">Series</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataFrame"><span class="toc-text">DataFrame</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas选择数据"><span class="toc-text">pandas选择数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas处理丢失数据"><span class="toc-text">pandas处理丢失数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas导入导出数据"><span class="toc-text">pandas导入导出数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读取csv"><span class="toc-text">读取csv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将资料存取成pickle"><span class="toc-text">将资料存取成pickle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas合并concat"><span class="toc-text">pandas合并concat</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/numpy和pandas笔记/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/numpy/"><i class="fa fa-tags"></i>numpy</a>
+     
+      <a href="/tags/pandas/"><i class="fa fa-tags"></i>pandas</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://morvanzhou.github.io/" target="_blank">莫烦PYTHON</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://spinningup.openai.com/en/latest/index.html" target="_blank">OpenAI in Deep RL</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://www.zhihu.com/people/xiao-ya-84-95/activities" target="_blank">知乎</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: wuya_93@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.jpg" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/Reinforcement Learning (1)/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/Tensorflow学习/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+      <script src="/script.js"></script>
+<script src="/script2.js"></script>
+    
+  </body>
+</html>
