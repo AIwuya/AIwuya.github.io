@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>标签 | 丹丹和丫丫的个人空间</title>
+  <title>《深入浅出强化学习-原理入门》笔记 | 丹丹和丫丫的个人空间</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="Reinforcement Learning,textbook,">
   
 
   
@@ -38,12 +38,12 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2019-03-8",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Dong Yuanxin",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
     mathjax: true,
-    page_type: "tags"
+    page_type: ""
   };
 </script>
 
@@ -159,15 +159,77 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="set">
-  <h3 style="text-align: center;">
-    <i class="fa fa-tags"></i>
-    标签云
-  </h3>
-  <a href="/tags/Hexo/" style="font-size: 14px; color: #9e9e9e">Hexo</a> <a href="/tags/List-Prediction/" style="font-size: 14px; color: #9e9e9e">List Prediction</a> <a href="/tags/Machine-Learning/" style="font-size: 14px; color: #9e9e9e">Machine Learning</a> <a href="/tags/Markdown/" style="font-size: 14px; color: #9e9e9e">Markdown</a> <a href="/tags/OpenAI/" style="font-size: 14px; color: #9e9e9e">OpenAI</a> <a href="/tags/Q-learning/" style="font-size: 14px; color: #9e9e9e">Q-learning</a> <a href="/tags/dissertation/" style="font-size: 14px; color: #9e9e9e">dissertation</a> <a href="/tags/numpy/" style="font-size: 14px; color: #9e9e9e">numpy</a> <a href="/tags/pandas/" style="font-size: 14px; color: #9e9e9e">pandas</a> <a href="/tags/robotics/" style="font-size: 14px; color: #9e9e9e">robotics</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #9e9e9e">tensorflow</a> <a href="/tags/textbook/" style="font-size: 36px; color: #212121">textbook</a> <a href="/tags/想法/" style="font-size: 14px; color: #9e9e9e">想法</a>
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-13
+    </span>
+    
+      <span>
+        | <a href="/categories/Reinforcement-Learning/"><i class="fa fa-bookmark"></i>Reinforcement Learning</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    《深入浅出强化学习-原理入门》笔记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="第一章-绪论"><a href="#第一章-绪论" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h1><p><code>序贯决策问题</code> ：需要连续不断地做出决策，才能实现最终目标的问题。</p>
+<p><code>强化学和监督学习的异同点</code> ：强化学习和监督学习的共同点是两者都需要⼤量的数据进⾏训练， 但是两者所需要的数据类型不同。 监督学习需要的是多样化的标签数据， 强化学习需要的是带有回报的交互数据。  </p>
+<h1 id="第二章-马尔可夫决策过程"><a href="#第二章-马尔可夫决策过程" class="headerlink" title="第二章 马尔可夫决策过程"></a>第二章 马尔可夫决策过程</h1><p><strong>马尔可夫性</strong> ：指系统的下一个状态$s_{t+1}$ 仅与当前状态$s_t$ 有关，而与以前的状态无关。</p>
+<p>强化学习的目标是给定一个马尔可夫决策过程，寻找最优策略。所谓==策略是指状态到动作的映射==，用符号$\pi$ 表示，指给定状态$s$ 时，动作集上的一个分布，即</p>
+<p>$$\pi(a|s)=p[A_t=a|S_t=s]$$</p>
+<p><strong>状态值函数</strong></p>
+<p><strong>状态-行为值函数</strong></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-绪论"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-马尔可夫决策过程"><span class="toc-text">第二章 马尔可夫决策过程</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/深入浅出强化学习-原理入门笔记/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/textbook/"><i class="fa fa-tags"></i>textbook</a>
+    
+    </div>
+  
 </div>
 
     </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -267,16 +329,16 @@
     <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/OpenAI-Spinning up学习笔记/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     

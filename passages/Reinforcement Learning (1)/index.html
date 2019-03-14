@@ -188,6 +188,11 @@
 <li>alpha是学习率, 来决定这次的误差有多少是要被学习的, alpha是一个小于1 的数.</li>
 <li>gamma 是对未来 reward 的衰减值.</li>
 </ul>
+<h2 id="Sarsa"><a href="#Sarsa" class="headerlink" title="Sarsa"></a>Sarsa</h2><p><img src="https://morvanzhou.github.io/static/results/ML-intro/s4.png" alt="Sarsa"></p>
+<p>Sarsa是说到做到型，Q-learning则是选择最大值，两者学习表格都是一样的，区别在于更新方法。</p>
+<h3 id="Sarsa-lambda"><a href="#Sarsa-lambda" class="headerlink" title="Sarsa (lambda)"></a>Sarsa (lambda)</h3><p>==单步更新和回合更新== </p>
+<p><strong>知识点</strong> 由于Sarsa算法更新迭代大部分地方跟之前Q-learning类似，所以直接利用python里面类继承的方式。</p>
+<p>​    父类？</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -196,7 +201,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#莫烦python强化学习课程"><span class="toc-text">莫烦python强化学习课程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-leaning"><span class="toc-text">Q-leaning</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-learning伪码"><span class="toc-text">Q-learning伪码</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#莫烦python强化学习课程"><span class="toc-text">莫烦python强化学习课程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-leaning"><span class="toc-text">Q-leaning</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-learning伪码"><span class="toc-text">Q-learning伪码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sarsa"><span class="toc-text">Sarsa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sarsa-lambda"><span class="toc-text">Sarsa (lambda)</span></a></li></ol></li></ol></li></ol>
   </div>
 </aside>
   

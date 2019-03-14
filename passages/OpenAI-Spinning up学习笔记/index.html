@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>标签 | 丹丹和丫丫的个人空间</title>
+  <title>OpenAI-Spinning up学习笔记 | 丹丹和丫丫的个人空间</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="Reinforcement Learning,OpenAI,">
   
 
   
@@ -38,12 +38,12 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2019-03-8",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Dong Yuanxin",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
     mathjax: true,
-    page_type: "tags"
+    page_type: ""
   };
 </script>
 
@@ -159,15 +159,114 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="set">
-  <h3 style="text-align: center;">
-    <i class="fa fa-tags"></i>
-    标签云
-  </h3>
-  <a href="/tags/Hexo/" style="font-size: 14px; color: #9e9e9e">Hexo</a> <a href="/tags/List-Prediction/" style="font-size: 14px; color: #9e9e9e">List Prediction</a> <a href="/tags/Machine-Learning/" style="font-size: 14px; color: #9e9e9e">Machine Learning</a> <a href="/tags/Markdown/" style="font-size: 14px; color: #9e9e9e">Markdown</a> <a href="/tags/OpenAI/" style="font-size: 14px; color: #9e9e9e">OpenAI</a> <a href="/tags/Q-learning/" style="font-size: 14px; color: #9e9e9e">Q-learning</a> <a href="/tags/dissertation/" style="font-size: 14px; color: #9e9e9e">dissertation</a> <a href="/tags/numpy/" style="font-size: 14px; color: #9e9e9e">numpy</a> <a href="/tags/pandas/" style="font-size: 14px; color: #9e9e9e">pandas</a> <a href="/tags/robotics/" style="font-size: 14px; color: #9e9e9e">robotics</a> <a href="/tags/tensorflow/" style="font-size: 14px; color: #9e9e9e">tensorflow</a> <a href="/tags/textbook/" style="font-size: 36px; color: #212121">textbook</a> <a href="/tags/想法/" style="font-size: 14px; color: #9e9e9e">想法</a>
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-09
+    </span>
+    
+      <span>
+        | <a href="/categories/Reinforcement-Learning/"><i class="fa fa-bookmark"></i>Reinforcement Learning</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    OpenAI-Spinning up学习笔记
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="The-On-Policy-Algorithms"><a href="#The-On-Policy-Algorithms" class="headerlink" title="The On-Policy Algorithms"></a>The On-Policy Algorithms</h2><p><code>on-policy</code> : they don’t use old data, which makes them <strong>weaker on sample efficiency</strong>.</p>
+<p>​            good reason, they directly optimize the policy performance.</p>
+<p>​            VPG(Vanilla Policy Gradient)——<em>basic, entry-level</em></p>
+<p>​            TRPO(Trust Region Policy Optimization), PPO(Proximal Policy Optimization)</p>
+<p><code>off-policy</code>:  reuse old data very efficiently</p>
+<p>​            DDPG(Deep Deterministic Policy Gradient)——foundational algorithm</p>
+<p>​            Q-learning</p>
+<p>​            TD3(Twin Delayed DDPG)</p>
+<p>​            SAC(Soft Actor-Critic)</p>
+<p><strong>Bellman Equation(贝尔曼方程)</strong> ：是动态规划等最优化方法能达到最优的必要条件。</p>
+<h3 id="Code-Format"><a href="#Code-Format" class="headerlink" title="Code Format"></a>Code Format</h3><p>两种：</p>
+<ul>
+<li><p>一种是核心代码，包含程序的运行逻辑。(algorithm file)</p>
+<p>直接在Gym环境下运行代码效果会更好</p>
+</li>
+<li><p>一种是实现该程序所需的辅助代码。(core file)</p>
+</li>
+</ul>
+<h2 id="强化学习环境的配置"><a href="#强化学习环境的配置" class="headerlink" title="强化学习环境的配置"></a>强化学习环境的配置</h2><p><strong>注意</strong> ！！！ 由于自己ubuntu默认python版本为2.7，所以安装下面东西时需要将其版本切换成python3，具体操作如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo alias python=python3 &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>参考链接</p>
+<ul>
+<li><a href="https://blog.csdn.net/will_ye/article/details/81071179" target="_blank" rel="noopener">https://blog.csdn.net/will_ye/article/details/81071179</a></li>
+<li><a href="https://blog.csdn.net/u012424106/article/details/79521173" target="_blank" rel="noopener">https://blog.csdn.net/u012424106/article/details/79521173</a></li>
+</ul>
+<ol>
+<li><p>安装anaconda，自带python版本为3.7 (cuda还没安装)</p>
+</li>
+<li><p>利用anaconda新建一个名为spinningup的环境， <code>source activate spinningup</code> 激活环境  <code>source deactivate spinningup</code> 关闭当前环境</p>
+</li>
+<li><p>安装OpenMPI</p>
+</li>
+<li><p>安装Spinningup  <code>pip install Spinning Up</code> </p>
+</li>
+<li><p>安装gym，步骤mujoco–&gt;mujoco-py–&gt;gym</p>
+<p>安装mujoco时，获取<code>mjkey.txt</code> 注意，先运行<code>chmod +x ./getid_linux</code>，然后运行<code>./getid_linux</code> </p>
+<p>安装mujoco-py，注意anaconda自带python版本，别弄错。利用conda新建一个mujoco-py的环境，利用<code>conda activate mujoco-py</code>激活，<code>conda deactivate</code>关闭</p>
+<p>安装gym，照常安装就行</p>
+</li>
+<li><p>安装tensorflow，注意跟环境内的python3.7版本配套，利用<code>pip install --ignore-installed --upgrade</code> 安装</p>
+</li>
+<li><p>安装<code>baseline</code> </p>
+</li>
+</ol>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-On-Policy-Algorithms"><span class="toc-text">The On-Policy Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Format"><span class="toc-text">Code Format</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#强化学习环境的配置"><span class="toc-text">强化学习环境的配置</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/OpenAI-Spinning up学习笔记/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/OpenAI/"><i class="fa fa-tags"></i>OpenAI</a>
+    
+    </div>
+  
 </div>
 
     </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
     
     <div class="site-footer-wrapper">
   <footer class="site-footer">
@@ -264,19 +363,19 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/深入浅出强化学习-原理入门笔记/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/19年第二周工作计划/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
-      <a href="javascript:void(0);" data-enable="false">
+      <a href="#site-comment" data-enable="true">
         <i class="fa fa-commenting"></i>
       </a>
     
