@@ -181,10 +181,16 @@
   
   <article class="passage-article">
     <ol>
-<li>更改密码时注意小键盘，ubuntu里面就算小键盘没开也是默认又输入的</li>
-<li>系统莫名其妙在登陆界面卡住，鼠标键盘都不好使<ul>
-<li>有可能是升级内核后造成的，利用如下命令就好了<code>sudo apt-get install --reinstall xserver-xorg-input-all</code> </li>
+<li><p>更改密码时注意小键盘，ubuntu里面就算小键盘没开也是默认又输入的</p>
+</li>
+<li><p>系统莫名其妙在登陆界面卡住，鼠标键盘都不好使</p>
+<ul>
+<li>有可能是升级内核后造成的，利用如下命令就好了<code>sudo apt-get install --reinstall xserver-xorg-input-all</code></li>
 </ul>
+</li>
+<li><p>ubuntu下不能挂载Windows盘符的情况</p>
+<p>首先终端输入<code>sudo fdisk -l</code> 查看分区挂载情况</p>
+<p>然后修复相应的挂载错误区，输入<code>sudo ntfsfix /dev/sda5</code> </p>
 </li>
 </ol>
 
@@ -326,7 +332,7 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/国内运动规划论文阅读笔记（2）/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/passages/深入浅出强化学习-原理入门笔记/" data-enable="true">
