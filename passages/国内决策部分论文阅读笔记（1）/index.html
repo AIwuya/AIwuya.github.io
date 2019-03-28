@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>《深入浅出强化学习-原理入门》笔记 | 丹丹和丫丫的个人空间</title>
+  <title>国内决策部分论文阅读笔记（1） | 丹丹和丫丫的个人空间</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Reinforcement Learning,textbook,">
+    <meta name="keywords" content="Behaviour Decision,domestic,">
   
 
   
@@ -162,11 +162,11 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-03-13
+      <i class="fa fa-calendar"></i>2019-03-27
     </span>
     
       <span>
-        | <a href="/categories/Reinforcement-Learning/"><i class="fa fa-bookmark"></i>Reinforcement Learning</a>
+        | <a href="/categories/Behaviour-Decision/"><i class="fa fa-bookmark"></i>Behaviour Decision</a>
       </span>
     
     
@@ -176,52 +176,16 @@
     
   </div>
   <h1 class="passage-title">
-    《深入浅出强化学习-原理入门》笔记
+    国内决策部分论文阅读笔记（1）
   </h1>
   
   <article class="passage-article">
-    <h1 id="第一章-绪论"><a href="#第一章-绪论" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h1><p><code>序贯决策问题</code> ：需要连续不断地做出决策，才能实现最终目标的问题。</p>
-<p><code>强化学和监督学习的异同点</code> ：强化学习和监督学习的共同点是两者都需要⼤量的数据进⾏训练， 但是两者所需要的数据类型不同。 监督学习需要的是多样化的标签数据， 强化学习需要的是带有回报的交互数据。  </p>
-<h1 id="第二章-马尔可夫决策过程"><a href="#第二章-马尔可夫决策过程" class="headerlink" title="第二章 马尔可夫决策过程"></a>第二章 马尔可夫决策过程</h1><p><strong>马尔可夫性</strong> ：指系统的下一个状态$s_{t+1}$ 仅与当前状态$s_t$ 有关，而与以前的状态无关。</p>
-<p>​    强化学习的目标是给定一个马尔可夫决策过程，寻找最优策略。所谓==策略是指状态到动作的映射==，用符号$\pi$ 表示，指给定状态$s$ 时，动作集上的一个分布，即</p>
-<p>$$\pi(a|s)=p[A_t=a|S_t=s]$$</p>
-<p><strong>状态值函数（state value function）</strong></p>
-<p><strong>状态-行为值函数（state-action value function）</strong></p>
-<h2 id="基于值函数的学习方法"><a href="#基于值函数的学习方法" class="headerlink" title="基于值函数的学习方法"></a>基于值函数的学习方法</h2><p>基于值函数的策略学习方法中最关键的是如何计算策略$\pi​$ 的值函数，一般有<strong>动态规划</strong>或<strong>蒙特卡罗</strong>两种计算方式。</p>
-<h3 id="动态规划算法"><a href="#动态规划算法" class="headerlink" title="动态规划算法"></a>动态规划算法</h3><p>基于模型的强化学习（Model-Based Reinforcement Learning），已知模型为马尔可夫决策过程。</p>
-<ul>
-<li>策略迭代算法（Policy Iteration）<ol>
-<li>策略评估（policy evaluation）</li>
-<li>策略改进（policy improvement）</li>
-</ol>
-</li>
-<li>值迭代算法<ul>
-<li>直接计算出最优策略，那么最优状态值函数$V^<em>(s)$ 和最优状态-动作值函数$Q^</em>(s,a)$ 关系为$$V^<em>(s)=\max_aQ^</em>(s,a)$$  </li>
-</ul>
-</li>
-</ul>
-<h3 id="蒙特卡洛方法"><a href="#蒙特卡洛方法" class="headerlink" title="蒙特卡洛方法"></a>蒙特卡洛方法</h3><p>基于采样的学习算法称为模型无关的强化学习（Model-Free Reinforcement Learning）算法。</p>
-<p>Q函数$Q^\pi(s,a)$为初始状态为$s$ ，并执行动作$a$ 后所能得到的期望总回报，可以写为</p>
-<p>$$Q^\pi(s,a)=E_{\tau\sim p(\tau)}[G(\tau_{s_0=s,a_0=a})]$$ 。如果模型未知，Q函数可以通过采样来进行计算，这就是蒙特卡罗方法。</p>
-<ul>
-<li>exploitation &amp; exploration</li>
-</ul>
-<p>如果采样确定性策略$\pi$ ，则仅对当前策略进行利用（exploitation），缺失了对环境的探索（exploration）</p>
-<ul>
-<li>on-policy &amp; off-policy</li>
-</ul>
-<p>采样和改进策略相同的强化学习方法叫on-policy，采样与改进分别使用不同策略的强化学习方法叫做off-policy。</p>
-<h3 id="时序差分学习方法（temporal-difference-learning）"><a href="#时序差分学习方法（temporal-difference-learning）" class="headerlink" title="时序差分学习方法（temporal-difference learning）"></a>时序差分学习方法（temporal-difference learning）</h3><p>​    结合动态规划和蒙特卡罗方法，模拟一段轨迹，每行动一步（或几步），就用贝尔曼方程来评估前状态的价值。当时序差分学习中每次更新的动作数为最大步数时，就等价于蒙特卡洛方法。</p>
-<ul>
-<li>SARSA算法（State Action Reward State Action）</li>
-</ul>
-<p>更新$\hat{Q}^\pi(s,a)$ 只需要知道当前状态$s$ 和动作$a$ 、奖励$r(s,a,s’)$ 、下一步的状态$s’$ 和动作$a’$  。</p>
-<h2 id="基于策略函数的学习方法"><a href="#基于策略函数的学习方法" class="headerlink" title="基于策略函数的学习方法"></a>基于策略函数的学习方法</h2><p>直接在策略空间搜索最佳策略的方法称为策略搜索（policy search）。</p>
-<ul>
-<li>基于梯度的优化</li>
-<li>无梯度优化</li>
-</ul>
-<h3 id="策略梯度（policy-gradient）"><a href="#策略梯度（policy-gradient）" class="headerlink" title="策略梯度（policy gradient）"></a>策略梯度（policy gradient）</h3>
+    <h1 id="北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析"><a href="#北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析" class="headerlink" title="北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析"></a>北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析</h1><p>NGSIM数据：美国联邦公路局，对指定路段通过高空摄像机采集得到，覆盖指定路段检测时间段内所有车辆的轨迹数据，包括每辆车每隔0.1s的速度、位置等准确信息。</p>
+<h1 id="哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）"><a href="#哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）" class="headerlink" title="*哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）"></a>*哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）</h1><p>利用改进型的DDPG（Deep Deterministic Policy Gradient，深度确定性策略梯度算法）在TORCS上进行了仿真验证。</p>
+<p>参考文献很经典</p>
+<h1 id="先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"><a href="#先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真" class="headerlink" title="先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"></a>先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真</h1><p>关于构建TORCS强化学习环境，需要构建一个交互模块（利用UDP接口，用户数据报协议），通过交互模块将仿真引擎统一成为一个车辆行驶的环境空间，即强化学习里面Agent生存环境的状态空间。</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1553690986947.png" alt="1553690986947"></p>
+
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -229,7 +193,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-绪论"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-马尔可夫决策过程"><span class="toc-text">第二章 马尔可夫决策过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基于值函数的学习方法"><span class="toc-text">基于值函数的学习方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#动态规划算法"><span class="toc-text">动态规划算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#蒙特卡洛方法"><span class="toc-text">蒙特卡洛方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时序差分学习方法（temporal-difference-learning）"><span class="toc-text">时序差分学习方法（temporal-difference learning）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于策略函数的学习方法"><span class="toc-text">基于策略函数的学习方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#策略梯度（policy-gradient）"><span class="toc-text">策略梯度（policy gradient）</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析"><span class="toc-text">北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）"><span class="toc-text">*哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"><span class="toc-text">先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真</span></a></li></ol>
   </div>
 </aside>
   
@@ -238,7 +202,7 @@
       
         <div>
           原文链接: 
-          <a href target="_blank">http://AIwuya.github.io/passages/深入浅出强化学习-原理入门笔记/</a>
+          <a href target="_blank">http://AIwuya.github.io/passages/国内决策部分论文阅读笔记（1）/</a>
         </div>
       
       <div>
@@ -249,7 +213,7 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/textbook/"><i class="fa fa-tags"></i>textbook</a>
+      <a href="/tags/domestic/"><i class="fa fa-tags"></i>domestic</a>
     
     </div>
   
@@ -360,10 +324,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/passages/Linux使用过程中遇到的坑/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/OpenAI-Spinning up学习笔记/" data-enable="true">
+    <a href="/passages/19年第五周工作计划/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
