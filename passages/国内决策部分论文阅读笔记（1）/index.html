@@ -185,6 +185,31 @@
 <p>参考文献很经典</p>
 <h1 id="先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"><a href="#先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真" class="headerlink" title="先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"></a>先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真</h1><p>关于构建TORCS强化学习环境，需要构建一个交互模块（利用UDP接口，用户数据报协议），通过交互模块将仿真引擎统一成为一个车辆行驶的环境空间，即强化学习里面Agent生存环境的状态空间。</p>
 <p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1553690986947.png" alt="1553690986947"></p>
+<h1 id="鲍实（期刊）——基于深度增强学习的无人车汇流决策方法"><a href="#鲍实（期刊）——基于深度增强学习的无人车汇流决策方法" class="headerlink" title="鲍实（期刊）——基于深度增强学习的无人车汇流决策方法"></a>鲍实（期刊）——基于深度增强学习的无人车汇流决策方法</h1><h2 id="1-解决问题"><a href="#1-解决问题" class="headerlink" title="1. 解决问题"></a>1. 解决问题</h2><p>典型<strong>双车道汇流</strong> 场景中，无人车行驶的相邻车道中车辆<strong>定速巡航</strong>场景下的无人车汇流问题。</p>
+<h2 id="2-使用方法"><a href="#2-使用方法" class="headerlink" title="2. 使用方法"></a>2. 使用方法</h2><ul>
+<li><p>根据车载传感器得到的周边环境信息，利用深度神经网络对Q函数非线性逼近，奖励函数根据使无人车安全高效汇流这一长期目标为引导。</p>
+</li>
+<li><p>利用带有奖励值的交互行车数据训练深度神经网络得到无人车汇流模型。</p>
+</li>
+<li><p>利用$\varepsilon$ 贪婪策略进行<em>Q</em>值更新</p>
+</li>
+</ul>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1554170728280.png" alt="1554170728280"></p>
+<ul>
+<li>神经网络为三层，训练过程中为了打破数据之间的关联性，使用经验回放进行实现。</li>
+<li>由于计算损失函数中前向传播计算目标Q值所用Q网络与使用方向传播算法更新权值所用Q网络为同一个神经网络，所用参数相同，容易造成数据间存在关联性使训练不稳定，本文使用两个结构相同的Q网络，一个为估计Q网络一个目标Q网络。</li>
+</ul>
+<h2 id="3-模拟实验"><a href="#3-模拟实验" class="headerlink" title="3. 模拟实验"></a>3. 模拟实验</h2><p>模拟左侧车道高中低不同车辆密度的交通环境，高中低速车速</p>
+<h2 id="4-未来工作"><a href="#4-未来工作" class="headerlink" title="4.未来工作"></a>4.未来工作</h2><p>本文解决了开放式未知环境下的无人车汇流问题。</p>
+<p>更加复杂的仿真交通场景以及真实环境下的无人车汇流实验</p>
+<h1 id="康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）"><a href="#康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）" class="headerlink" title="*康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）"></a>*康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）</h1><h2 id="1-知识点"><a href="#1-知识点" class="headerlink" title="1. 知识点"></a>1. 知识点</h2><p>无人车行为决策主要分为<strong>基于规则</strong>和<strong>基于学习</strong>两种</p>
+<ul>
+<li>基于规则的行为决策，即将无人驾驶车辆的行为进行划分，根据行驶规则、知识、经验、交通法规等建立行为规则库，根据不同的环境信息划分车辆状态，按照规则逻辑确定车辆行为的方法。其代表方法为<strong>有限状态机法</strong>[9-10]，代表应用有智能先锋II[11]、红旗CA7460、Boss[12]、Junior[13]、Odin[14]、Talos[15]、Bertha[16]等。</li>
+<li>基于学习算法的行为决策，即通过对环境样本进行自主学习，由数据驱动建立行为规则库，利用不同的学习方法与网络结构，根据不同的环境信息直接进行行为匹配，输出决策行为的方法，以深度学习的相关方法及决策树等各类机器学习方法[17-18]为代表。代表应用有英伟达（NVIDIA）[19]、Intel[20]、Comma.ai[21]、Mobileye[22]、百度、Waymo、特斯拉等。</li>
+</ul>
+<p><strong>有限状态机法</strong></p>
+<p>​    有限状态机是一种离散输入、输出系统的数学模型。它由有限个状态组成，当前状态接收事件，并产生相应的动作，引起状态的转移。状态、事件、转移、动作是有限状态机的四大要素[23-24]。</p>
+<p>​    有限状态机的核心在于状态分解。根据状态分解的连接逻辑，将其分为<strong>串联式、并联式、混联式</strong>3种体系架构。</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -193,7 +218,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析"><span class="toc-text">北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）"><span class="toc-text">*哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"><span class="toc-text">先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析"><span class="toc-text">北交房哲哲（2018硕士）——基于深度学习的换道行为建模与分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）"><span class="toc-text">*哈工大左思翔（2018硕士）——基于深度强化学习的无人驾驶智能决策控制研究（重点文献）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真"><span class="toc-text">先进所夏伟（2017硕士）——基于深度强化学习的自动驾驶决策仿真</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鲍实（期刊）——基于深度增强学习的无人车汇流决策方法"><span class="toc-text">鲍实（期刊）——基于深度增强学习的无人车汇流决策方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-解决问题"><span class="toc-text">1. 解决问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-使用方法"><span class="toc-text">2. 使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-模拟实验"><span class="toc-text">3. 模拟实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-未来工作"><span class="toc-text">4.未来工作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）"><span class="toc-text">*康宇宸（期刊）——无人驾驶车辆行为决策系统研究（重点文献）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-知识点"><span class="toc-text">1. 知识点</span></a></li></ol></li></ol>
   </div>
 </aside>
   
@@ -324,7 +349,7 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/学习工具/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/passages/19年第五周工作计划/" data-enable="true">
