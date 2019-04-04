@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>学习工具 | 丹丹和丫丫的个人空间</title>
+  <title>国外运动规划论文阅读笔记（1） | 丹丹和丫丫的个人空间</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="其他工具,Ph.D.,">
+    <meta name="keywords" content="Motion Planning,CMU,">
   
 
   
@@ -162,11 +162,11 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-04-03
+      <i class="fa fa-calendar"></i>2019-04-04
     </span>
     
       <span>
-        | <a href="/categories/其他工具/"><i class="fa fa-bookmark"></i>其他工具</a>
+        | <a href="/categories/Motion-Planning/"><i class="fa fa-bookmark"></i>Motion Planning</a>
       </span>
     
     
@@ -176,15 +176,30 @@
     
   </div>
   <h1 class="passage-title">
-    学习工具
+    国外运动规划论文阅读笔记（1）
   </h1>
   
   <article class="passage-article">
-    <h1 id="地图工具"><a href="#地图工具" class="headerlink" title="地图工具"></a>地图工具</h1><p><code>NGSIM</code></p>
-<p>美国交通部的一个交通信息统计工具</p>
-<p><code>OSM(OpenStreetMap)开源地图</code> </p>
-<p><code>Google Sketchup</code> </p>
-<p>3D建模软件，搭建建筑模型</p>
+    <h1 id="1-CMU-robotic-institute论文"><a href="#1-CMU-robotic-institute论文" class="headerlink" title="1. CMU robotic institute论文"></a>1. CMU robotic institute论文</h1><h2 id="Motion-Planning-in-Urban-Environments-Part-I-2008"><a href="#Motion-Planning-in-Urban-Environments-Part-I-2008" class="headerlink" title="Motion Planning in Urban Environments: Part I (2008)"></a>Motion Planning in Urban Environments: Part I (2008)</h2><p>Ferguson, D., Howard, T. M., &amp; Likhachev, M. (2008, September). Motion planning in urban environments: Part ii. In <em>2008 IEEE/RSJ International Conference on Intelligent Robots and Systems</em> (pp. 1070-1076). IEEE.</p>
+<p>基于Boss车上采用方法，选用两个planner，并利用一个模型预测算法对周围动态物体进行预测。</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1554377517789.png" alt="1554377517789"></p>
+<h3 id="关于两个planner"><a href="#关于两个planner" class="headerlink" title="关于两个planner"></a>关于两个planner</h3><ul>
+<li>结构化道路时(nominal on-road driving)，直接跟踪车道线，高速规划</li>
+<li>非结构化道路时(unstructured driving)，利用一个4D lattice planner</li>
+</ul>
+<h3 id="关于lattice-planner"><a href="#关于lattice-planner" class="headerlink" title="关于lattice planner"></a>关于lattice planner</h3><p>参考论文——Differentially constrained mobile robot motion planning in state lattices</p>
+<p>参考链接<a href="https://blog.csdn.net/yuxuan20062007/article/details/82330165" target="_blank" rel="noopener">https://blog.csdn.net/yuxuan20062007/article/details/82330165</a></p>
+<p><img src="https://img-blog.csdn.net/20180903042137177?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1eHVhbjIwMDYyMDA3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
+<p><strong>Frenetic坐标系</strong> 基于车道线横向和纵向</p>
+<p>​    纵向偏移量用<em>S</em>表示，横向偏移量用<em>L</em>表示</p>
+<h2 id="Motion-Planning-in-Urban-Environments-Part-II-2008"><a href="#Motion-Planning-in-Urban-Environments-Part-II-2008" class="headerlink" title="Motion Planning in Urban Environments: Part II (2008)"></a>Motion Planning in Urban Environments: Part II (2008)</h2><p>主要是关于unstructured environment下的运动规划</p>
+<p>sophisticated motion planning</p>
+<h2 id="Pivtoraiko-M-——state-lattice"><a href="#Pivtoraiko-M-——state-lattice" class="headerlink" title="Pivtoraiko, M.——state lattice"></a>Pivtoraiko, M.——state lattice</h2><h3 id="Adaptive-Anytime-Motion-Planning-For-Robust-Robot-Navigation-In-Natural-Environments-2009"><a href="#Adaptive-Anytime-Motion-Planning-For-Robust-Robot-Navigation-In-Natural-Environments-2009" class="headerlink" title="Adaptive Anytime Motion Planning For Robust Robot Navigation In Natural Environments (2009)"></a>Adaptive Anytime Motion Planning For Robust Robot Navigation In Natural Environments (2009)</h3><p>Pivtoraiko, M. (2009, July). Adaptive Anytime Motion Planning For Robust Robot Navigation In Natural Environments. In <em>2009 Advanced Technologies for Enhanced Quality of Life</em>(pp. 123-129). IEEE.</p>
+<p>作者就是提出<strong>state lattice</strong>那人</p>
+<h4 id="采用方法"><a href="#采用方法" class="headerlink" title="采用方法"></a>采用方法</h4><p>在状态栅格中利用无约束的启发式搜索可以保证满足任意的移动约束。</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1554384420867.png" alt="1554384420867"></p>
+<h3 id="Differentially-Constrained-Mobile-Robot-Motion-Planning-in-State-Lattices"><a href="#Differentially-Constrained-Mobile-Robot-Motion-Planning-in-State-Lattices" class="headerlink" title="Differentially Constrained Mobile Robot Motion Planning in State Lattices"></a>Differentially Constrained Mobile Robot Motion Planning in State Lattices</h3><p>状态格子是一种对状态空间离散化的手段.状态格子由结点(表示状态)和从该结点出发到达相邻结点的运动基元组成，一个状态结点可以通过其运动基元变换到另一个状态结点.这样，状态格子就将原来连续的状态空间转化为一个搜索图，运动规划问题就变成了在图中搜索出一系列将初始状态变换到目标状态的运动基元.</p>
+<h3 id="Model-Predictive-Motion-Planning-Several-Key-Developments-for-Autonomous-Mobile-Robots"><a href="#Model-Predictive-Motion-Planning-Several-Key-Developments-for-Autonomous-Mobile-Robots" class="headerlink" title="Model-Predictive Motion Planning: Several Key Developments for Autonomous Mobile Robots"></a>Model-Predictive Motion Planning: Several Key Developments for Autonomous Mobile Robots</h3><p>这是Pivtoraiko参与的一篇综述性文章，里面好多图都在以前论文里面出现过</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -193,7 +208,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#地图工具"><span class="toc-text">地图工具</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-CMU-robotic-institute论文"><span class="toc-text">1. CMU robotic institute论文</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Planning-in-Urban-Environments-Part-I-2008"><span class="toc-text">Motion Planning in Urban Environments: Part I (2008)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于两个planner"><span class="toc-text">关于两个planner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于lattice-planner"><span class="toc-text">关于lattice planner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Planning-in-Urban-Environments-Part-II-2008"><span class="toc-text">Motion Planning in Urban Environments: Part II (2008)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pivtoraiko-M-——state-lattice"><span class="toc-text">Pivtoraiko, M.——state lattice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaptive-Anytime-Motion-Planning-For-Robust-Robot-Navigation-In-Natural-Environments-2009"><span class="toc-text">Adaptive Anytime Motion Planning For Robust Robot Navigation In Natural Environments (2009)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#采用方法"><span class="toc-text">采用方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Differentially-Constrained-Mobile-Robot-Motion-Planning-in-State-Lattices"><span class="toc-text">Differentially Constrained Mobile Robot Motion Planning in State Lattices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model-Predictive-Motion-Planning-Several-Key-Developments-for-Autonomous-Mobile-Robots"><span class="toc-text">Model-Predictive Motion Planning: Several Key Developments for Autonomous Mobile Robots</span></a></li></ol></li></ol></li></ol>
   </div>
 </aside>
   
@@ -202,7 +217,7 @@
       
         <div>
           原文链接: 
-          <a href target="_blank">http://AIwuya.github.io/passages/学习工具/</a>
+          <a href target="_blank">http://AIwuya.github.io/passages/国外运动规划论文阅读笔记（1）/</a>
         </div>
       
       <div>
@@ -213,7 +228,7 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/Ph-D/"><i class="fa fa-tags"></i>Ph.D.</a>
+      <a href="/tags/CMU/"><i class="fa fa-tags"></i>CMU</a>
     
     </div>
   
@@ -324,10 +339,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/passages/国外运动规划论文阅读笔记（1）/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/国内决策部分论文阅读笔记（1）/" data-enable="true">
+    <a href="/passages/学习工具/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
