@@ -6,12 +6,12 @@
   <meta name="author" content="Dong Yuanxin">
   
   
-  <title>国外运动规划论文阅读笔记| LSTM | 丹丹和丫丫的个人空间</title>
+  <title>Deep Learning | 图解机器学习 | 丹丹和丫丫的个人空间</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Motion Planning,LSTM,">
+    <meta name="keywords" content="Deep Learning,图解机器学习,">
   
 
   
@@ -162,11 +162,11 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-04-14
+      <i class="fa fa-calendar"></i>2019-05-26
     </span>
     
       <span>
-        | <a href="/categories/Motion-Planning/"><i class="fa fa-bookmark"></i>Motion Planning</a>
+        | <a href="/categories/Deep-Learning/"><i class="fa fa-bookmark"></i>Deep Learning</a>
       </span>
     
     
@@ -176,29 +176,114 @@
     
   </div>
   <h1 class="passage-title">
-    国外运动规划论文阅读笔记| LSTM
+    Deep Learning | 图解机器学习
   </h1>
   
   <article class="passage-article">
-    <h1 id="1-Social-LSTM-Human-Trajectory-Prediction-in-Crowded-Spaces"><a href="#1-Social-LSTM-Human-Trajectory-Prediction-in-Crowded-Spaces" class="headerlink" title="1. Social LSTM: Human Trajectory Prediction in Crowded Spaces"></a>1. Social LSTM: Human Trajectory Prediction in Crowded Spaces</h1><p>Alahi, A., Goel, K., Ramanathan, V., Robicquet, A., Fei-Fei, L., &amp; Savarese, S. (2016). Social lstm: Human trajectory prediction in crowded spaces. In <em>Proceedings of the IEEE conference on computer vision and pattern recognition</em> (pp. 961-971).</p>
-<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><ul>
-<li>对周围环境的语义理解对预测有很大帮助</li>
-<li>建立人-人之间的相互作用模型能提高多物体追踪的鲁棒性和精确度（social forces）</li>
+    <h1 id="第一章-绪论"><a href="#第一章-绪论" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h1><p>Dropout——防止过拟合</p>
+<p>激活函数、预训练 ——使训练过程顺利收敛</p>
+<p>定义：深度学习一般是指具有多层结构的网络，不过对于网络的层数没有严格定义，网络生成方法也是多种多样</p>
+<p>深度学习的起源：</p>
+<ul>
+<li>感知器<ul>
+<li>有监督学习</li>
+<li>将多个感知器组合到一起得到多层感知器，在多层感知器的基础上加入类似人类视觉皮质的结构得到卷积神经网络</li>
+<li>广泛应用于图像识别领域</li>
 </ul>
-<p>影响上述工作的两个假设：</p>
-<ol>
-<li>对于物体相互之间的作用是人为手动建模，不是通过数据驱动</li>
-<li>预测时间短</li>
-</ol>
-<p><strong>LSTM的优缺点：</strong> </p>
-<p>LSTM对不同的序列预测任务很成功：handwriting and speech generation</p>
-<p>优：能预测长序列</p>
-<p>缺：不能得到序列直接的相互关系</p>
-<h2 id="2-Model"><a href="#2-Model" class="headerlink" title="2. Model"></a>2. Model</h2><p><strong>建立模型的目的：</strong></p>
-<p>which can account for the behaviour of other people within a large neighbourhood, while predicting a person’s path.</p>
-<h3 id="2-1-Social-LSTM"><a href="#2-1-Social-LSTM" class="headerlink" title="2.1 Social LSTM"></a>2.1 Social LSTM</h3><p>空间相邻的两个LSTM之间用池化层来相互分享信息。</p>
-<p><strong>遇到的问题：</strong></p>
-<p>拥挤场景中每个人相邻的人数量不一样—-&gt;解决办法，”Social“ pooling layers</p>
+</li>
+<li>玻尔兹曼机<ul>
+<li>无监督学习</li>
+<li>深度玻尔兹曼机和深度信念网络通过将多个玻尔兹曼机组合到一起得到</li>
+</ul>
+</li>
+</ul>
+<h1 id="第二章-神经网络"><a href="#第二章-神经网络" class="headerlink" title="第二章 神经网络"></a>第二章 神经网络</h1><h2 id="2-2-M-P模型"><a href="#2-2-M-P模型" class="headerlink" title="2.2 M-P模型"></a>2.2 M-P模型</h2><p>首个通过模仿神经元而形成的模型。当时还没有通过对训练样本进行训练来确定参数的方法，只能人为事先计算后确定。</p>
+<h2 id="2-3-感知器"><a href="#2-3-感知器" class="headerlink" title="2.3 感知器"></a>2.3 感知器</h2><ul>
+<li><p>与M-P模型需要人为确定参数不同，感知器能通过训练自动确定参数。训练方式为有监督学习，即需要设定训练样本和期望输出，然后调整实际输出和期望输出之差的方式（<strong>误差修正学习</strong>）。</p>
+</li>
+<li><p>但是感知器只能解决线性可分问题，不能解决线性不可分问题。为了解决线性不可分问题使用多车感知器</p>
+<ul>
+<li>无法用一条直线将两个类别区分开的就是线性不可分问题</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-4-多层感知器（multilayer-perception）"><a href="#2-4-多层感知器（multilayer-perception）" class="headerlink" title="2.4 多层感知器（multilayer perception）"></a>2.4 多层感知器（multilayer perception）</h2><p>定义：由多层结构的感知器递阶组成的输入值向前传播的网络，也被称为前馈网络或正向传播网络。</p>
+<p>结构组成</p>
+<ul>
+<li>输入层</li>
+<li>中间层<ul>
+<li>中间层的感知器通过<strong>权重</strong>与输入层的各单元相连接，通过<strong>阀值函数</strong>计算中间层各单元的输出值</li>
+<li>中间层与输出层之间同样时通过<strong>权重</strong>相连接</li>
+</ul>
+</li>
+<li>输出层</li>
+</ul>
+<p>对于多层网络如何训练连接权重，引入了误差反向传播算法。</p>
+<h2 id="2-6-误差函数和激活函数"><a href="#2-6-误差函数和激活函数" class="headerlink" title="2.6 误差函数和激活函数"></a>2.6 误差函数和激活函数</h2><ul>
+<li>M-P模型中使用step函数作为激活函数</li>
+<li>多层感知器中使用sigmoid函数</li>
+<li>tanh函数（双曲正切函数）</li>
+<li>修正线性单元（Rectified Linear Unit, ReLU）</li>
+</ul>
+<h2 id="2-8-随机梯度下降法"><a href="#2-8-随机梯度下降法" class="headerlink" title="2.8 随机梯度下降法"></a>2.8 随机梯度下降法</h2><ul>
+<li>批量学习（batch learning）<ul>
+<li>每次迭代时遍历全部训练样本</li>
+<li>优点：有效抑制训练集内带噪声的样本所导致的输入模式剧烈变动</li>
+<li>缺点：训练时间长</li>
+</ul>
+</li>
+<li>在线学习（sequential learning或online Learning）<ul>
+<li>迭代出现大幅变动，可能导致训练无法收敛。可以在迭代时逐渐降低学习率</li>
+</ul>
+</li>
+<li>小批量梯度下降法（mini-batch learning）<ul>
+<li>能同时弥补在线学习和批量学习的缺点</li>
+</ul>
+</li>
+</ul>
+<p>小批量梯度下降法和在线学习都是使用部分训练样本进行迭代计算，这种方法也叫作随机梯度下降法（Stocastic Gradient Descent, SGD）。减少迭代结果陷入局部最优解的情况。</p>
+<h2 id="2-9-学习率"><a href="#2-9-学习率" class="headerlink" title="2.9 学习率"></a>2.9 学习率</h2><p>定义：用来确定权重连接调整成都的系数。</p>
+<ul>
+<li>多数情况是设定一个较大的值，再慢慢把这个值减小</li>
+<li>自适应调整学习率，如AdaGrad方法</li>
+<li>AdaDelta方法</li>
+<li>动量（momentum）方法</li>
+</ul>
+<h1 id="第三章-卷积神经网络"><a href="#第三章-卷积神经网络" class="headerlink" title="第三章 卷积神经网络"></a>第三章 卷积神经网络</h1><h2 id="3-1-卷积神经网络的结构"><a href="#3-1-卷积神经网络的结构" class="headerlink" title="3.1 卷积神经网络的结构"></a>3.1 卷积神经网络的结构</h2><ul>
+<li>输入层（input layer）</li>
+<li>卷积层（convolution layer）<ul>
+<li>输入样本和卷积核的内积运算。第一层卷积层对输入样本进行卷积操作后，就可以得到特征图。卷积层中使用同一卷积核对每个输入样本进行卷积操作。第二层及其以后的卷积层，把前一层的特征图作为输入数据，同样进行卷积操作。<ul>
+<li>特征图的个数由上一层的卷积核决定</li>
+</ul>
+</li>
+<li>填充（padding）<ul>
+<li>零填充（zero-padding）用0填充输入样本的边界</li>
+</ul>
+</li>
+<li>卷积结果不能直接作为特征图，需要经过激活函数计算，将函数结果作为特征图</li>
+</ul>
+</li>
+<li>池化层（pooling layer）<ul>
+<li>减少卷积层产生的特征图的尺寸。选取一个区域，根据该区域的特征图得到新的特征图，这个过程就称为池化操作。</li>
+<li>最大池化</li>
+<li>平均池化</li>
+<li>Lp池化，通过突出图像区域内的中央值而计算新的特征图</li>
+</ul>
+</li>
+<li>全连接层（fully connected layer）<ul>
+<li>与多层感知器一样，先计算激活值，然后通过激活函数计算各单元的输出值</li>
+<li>需要对二维特征图进行降维处理</li>
+</ul>
+</li>
+<li>输出层（output layer）<ul>
+<li>使用似然函数计算各类别的似然概率<ul>
+<li>softmax函数</li>
+<li>线性输出函数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -207,7 +292,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Social-LSTM-Human-Trajectory-Prediction-in-Crowded-Spaces"><span class="toc-text">1. Social LSTM: Human Trajectory Prediction in Crowded Spaces</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1. Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Model"><span class="toc-text">2. Model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Social-LSTM"><span class="toc-text">2.1 Social LSTM</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-绪论"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-神经网络"><span class="toc-text">第二章 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-M-P模型"><span class="toc-text">2.2 M-P模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-感知器"><span class="toc-text">2.3 感知器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-多层感知器（multilayer-perception）"><span class="toc-text">2.4 多层感知器（multilayer perception）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-误差函数和激活函数"><span class="toc-text">2.6 误差函数和激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-随机梯度下降法"><span class="toc-text">2.8 随机梯度下降法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-学习率"><span class="toc-text">2.9 学习率</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三章-卷积神经网络"><span class="toc-text">第三章 卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-卷积神经网络的结构"><span class="toc-text">3.1 卷积神经网络的结构</span></a></li></ol></li></ol>
   </div>
 </aside>
   
@@ -216,7 +301,7 @@
       
         <div>
           原文链接: 
-          <a href target="_blank">http://AIwuya.github.io/passages/国外运动规划论文阅读笔记（3）/</a>
+          <a href target="_blank">http://AIwuya.github.io/passages/深度学习笔记/</a>
         </div>
       
       <div>
@@ -227,7 +312,7 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/LSTM/"><i class="fa fa-tags"></i>LSTM</a>
+      <a href="/tags/图解机器学习/"><i class="fa fa-tags"></i>图解机器学习</a>
     
     </div>
   
@@ -338,10 +423,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/passages/2019.4.21考情分析/" data-enable="true">
+    <a href="/passages/ICRA2019阅读笔记/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/国外运动规划论文阅读笔记（2）/" data-enable="true">
+    <a href="/passages/英文文献词汇句型积累/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

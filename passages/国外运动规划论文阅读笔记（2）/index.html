@@ -190,7 +190,355 @@
 <li>不论状态空间如何复杂它都具有连续性</li>
 <li>它与维度成线性关系</li>
 </ul>
-<h1 id="2-Imitation-Learning"><a href="#2-Imitation-Learning" class="headerlink" title="2. Imitation Learning"></a>2. Imitation Learning</h1><h2 id="Driving-Policy-Transfer-via-Modularity-and-Abstraction"><a href="#Driving-Policy-Transfer-via-Modularity-and-Abstraction" class="headerlink" title="Driving Policy Transfer via Modularity and Abstraction"></a>Driving Policy Transfer via Modularity and Abstraction</h2><p>Müller, M., Dosovitskiy, A., Ghanem, B., &amp; Koltun, V. (2018). Driving policy transfer via modularity and abstraction. <em>arXiv preprint arXiv:1804.09364</em>.</p>
+<h1 id="2-Imitation-Learning"><a href="#2-Imitation-Learning" class="headerlink" title="2. Imitation Learning"></a>2. Imitation Learning</h1><h2 id="2-1-中文笔记"><a href="#2-1-中文笔记" class="headerlink" title="2.1 中文笔记"></a>2.1 中文笔记</h2><p><strong>概念</strong>：</p>
+<p>模仿学习是指从示教者提供的范例中学习，一般提供人类专家的<strong>决策数据</strong>${ \tau_1,\tau_2,…,\tau_m } $，<strong>每个决策包含状态和动作序列</strong>$\tau_i=&lt;s_1^i,a_1^i,s_2^i,a_2^i,…,s_n^i&gt;$，将所有[状态-动作对]抽取出来构造新的集合$D={(s_1,a_1),(s_2,a_2),(s_3,a_3),…}$。</p>
+<p>之后就可以把状态作为特征（feature），动作作为标记（label）进行分类（对于离散动作）或回归（对于连续动作）的学习从而得到最优策略模型。模型的训练目标是使模型生成的状态-动作轨迹分布和输入的轨迹分布相匹配。</p>
+<h2 id="2-2-相关论文"><a href="#2-2-相关论文" class="headerlink" title="2.2 相关论文"></a>2.2 相关论文</h2><h3 id="Driving-Policy-Transfer-via-Modularity-and-Abstraction"><a href="#Driving-Policy-Transfer-via-Modularity-and-Abstraction" class="headerlink" title="Driving Policy Transfer via Modularity and Abstraction"></a>Driving Policy Transfer via Modularity and Abstraction</h3><p>Müller, M., Dosovitskiy, A., Ghanem, B., &amp; Koltun, V. (2018). Driving policy transfer via modularity and abstraction. <em>arXiv preprint arXiv:1804.09364</em>.</p>
+<p>发表在CoRL-Conference of Robot Learning18年会议上（第二届）</p>
+<h4 id="1-创新点"><a href="#1-创新点" class="headerlink" title="1. 创新点"></a>1. 创新点</h4><p><strong>本文的<em>关键点</em> 是端到端策略不直接对原始图片进行处理，而是对语义分割之后的图像进行处理</strong> </p>
+<p>结构主要分为三个部分：</p>
+<ol>
+<li>感知，包括语义分割。输入为原始图像，输出为分割好的场景</li>
+<li>端到端策略学习，输入为步骤一的分割场景，输出为一个局部规划路径，得到车的可行驶区域（并不是油门跟转角）</li>
+<li>一个低级的运动控制器根据可行驶区域（PID）</li>
+</ol>
+<h4 id="2-使用的方法"><a href="#2-使用的方法" class="headerlink" title="2. 使用的方法"></a>2. 使用的方法</h4><ul>
+<li>对于语义分割网络的训练利用开源的数据集[文献9]</li>
+<li>驾驶策略训练直接在模拟器进行</li>
+</ul>
+<ol>
+<li><p>Perception</p>
+<p>对于分割网络的训练直接用的公开数据集（the real-world Cityscapes dataset），并不是用的模拟驾驶数据集。但是也能很好的适应模拟器跟真实场景。</p>
+<p>使用<code>分割网络为ERFNet architecture</code>（文献39）</p>
+</li>
+<li><p>Driving policy</p>
+<p>驾驶决策部分输出为每帧两个路点（waypoints）一个是用来控制转向，一个是用来长期规划控制油门（比如转向前减小油门）</p>
+<p>本文中固定$w_1$ 和$w_2$ 的距离大小$r$，只预测角度$\varphi$ 。</p>
+<p>训练driving policy用<code>imitation learning网络使用CIL</code>（文献8）在模拟器中进行，数据集是一个<strong>observation-command-action</strong> 的三元数组。其中observation为观察到的图像，command为三个高级的导航命令（左转，直行，右转），action为车辆的控制（转向，油门）</p>
+</li>
+<li><p>数据增加的方法(data augmentation)</p>
+<p>domain randomization approach(文献42)</p>
+</li>
+</ol>
+<h4 id="3-评估"><a href="#3-评估" class="headerlink" title="3. 评估"></a>3. 评估</h4><ul>
+<li>评估时用单目摄像头</li>
+<li>不同的虚拟环境（天气）</li>
+<li>真实环境</li>
+</ul>
+<h4 id="4-结论"><a href="#4-结论" class="headerlink" title="4. 结论"></a>4. 结论</h4><ul>
+<li>在模拟器中，相比传统的monolithic end-to-end counterparts，该modular method 具有很大的优势</li>
+<li>现实环境中，不同的路面（clear, snowy, wet）、天气环境(sunshine, overcast, dusk)</li>
+</ul>
+<h4 id="5-相关工作"><a href="#5-相关工作" class="headerlink" title="5. 相关工作"></a>5. 相关工作</h4><p>文献7工作与本文类似，不过他们需要一个AR设备来诊断和推动物体。</p>
+<p>文献37最早提出迁移学习， 不过就只进行了车道线跟踪（文献3）。文献31实现了避障，利用深度表达，但是不适合城市复杂道路的驾驶。离线驾驶（文献25，44），简单城市环境的导航（文献8）.</p>
+<h4 id="6-参考文献"><a href="#6-参考文献" class="headerlink" title="6. 参考文献"></a>6. 参考文献</h4><p>数据集</p>
+<p>[9] M. Cordts, M. Omran, S. Ramos, T. Rehfeld, M. Enzweiler, R. Benenson, U. Franke, S. Roth, and<br>B. Schiele. The cityscapes dataset for semantic urban scene understanding. In CVPR, 2016. </p>
+<p>模仿学习方法CIL</p>
+<p>[8] F. Codevilla, M. Muller, A. Dosovitskiy, A. L ¨ opez, and V. Koltun. End-to-end driving via conditional ´<br>imitation learning. In ICRA, 2018. </p>
+<p>分割网络</p>
+<p>[39] E. Romera, J. M. Alvarez, L. M. Bergasa, and R. Arroyo. Efficient ConvNet for real-time semantic ´<br>segmentation. In Intelligent Vehicles Symposium (IV), 2017. </p>
+<p>数据增加方法domain randomization </p>
+<p>[42] F. Sadeghi and S. Levine. CAD2RL: Real single-image flight without a single real image. In RSS, 2017 </p>
+<h3 id="End-to-end-Driving-via-Conditional-Imitation-Learning"><a href="#End-to-end-Driving-via-Conditional-Imitation-Learning" class="headerlink" title="End-to-end Driving via Conditional Imitation Learning"></a>End-to-end Driving via Conditional Imitation Learning</h3><p>Codevilla, F., Miiller, M., López, A., Koltun, V., &amp; Dosovitskiy, A. (2018, May). End-to-end driving via conditional imitation learning. In <em>2018 IEEE International Conference on Robotics and Automation (ICRA)</em> (pp. 1-9). IEEE.</p>
+<h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Conditional Imitation Learning概念： </span><br><span class="line"></span><br><span class="line">At training time, the model is given not only the perceptual input and the control signal, but also a representation of the expert’s intention.  At test time, the network can be given corresponding commands, which resolve the ambiguity in the perceptuomotor mapping and allow the trained model to be controlled by a passenger or a topological planner, just as mapping applications and passengers provide turn-by-turn directions to human drivers.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ablation studies：模型简化测试，顾名思义，就是去掉模型中的部分模块，然后看模型的性能是否发生变化。</span><br><span class="line"></span><br><span class="line">英文解释 An ablation study typically refers to removing some “feature” of the model or algorithm, and seeing how that affects performance.</span><br></pre></td></tr></table></figure>
+<h4 id="2-相关工作"><a href="#2-相关工作" class="headerlink" title="2. 相关工作"></a>2. 相关工作</h4><ul>
+<li><p>和本文工作类似的文献有27，22，4, 36， 6</p>
+</li>
+<li><p><strong>通过人类指导的机器人行为</strong>（文献5，14，24，34，35），貌似大部分是自然语言处理。</p>
+<ul>
+<li>本文是利用的预先定义的文本，比如下一个路口向右转，下个路口向左转，直行。</li>
+<li>另外，由于本文也是基于视觉的端到端深度网络，限制了接收语言命令的能力</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-Conditional-Imitation-Learning介绍-amp-Methodology"><a href="#3-Conditional-Imitation-Learning介绍-amp-Methodology" class="headerlink" title="3. Conditional Imitation Learning介绍 &amp; Methodology"></a>3. Conditional Imitation Learning介绍 &amp; Methodology</h4><p>前提背景：控制器与环境交流是离散的时间步长，是一个监督学习问题</p>
+<ul>
+<li>网络结构<ul>
+<li>输入为image <strong>i</strong> ，维度<strong>m</strong>，命令command <strong>c</strong> </li>
+<li>输出为action <strong>a</strong> ，action space 是一个连续二维的空间：转向角和加速度</li>
+<li>两种方法将command <strong>c</strong> 添加到网络中</li>
+</ul>
+</li>
+<li>网络详细介绍<ul>
+<li>actions的损失函数</li>
+<li>求解器的设置Adam solver</li>
+<li>….</li>
+</ul>
+</li>
+<li>训练数据的分配<ul>
+<li>不能单一的从一个专家经验中获得，参考文献29，4</li>
+<li>to further augment the training dataset，加入噪声到专家控制信号，与文献21所作工作类似</li>
+</ul>
+</li>
+<li>数据增量<ul>
+<li>transformations 包括对比度、亮度、加各种噪声污点和区域剔除</li>
+<li>但是没有几何变化，如旋转和平移，因为这种情况下command也需要改变</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-实验设置"><a href="#4-实验设置" class="headerlink" title="4. 实验设置"></a>4. 实验设置</h4><ul>
+<li>simulated environment<ul>
+<li>command也是通过方向盘上的buttons实现(command命令有四个continue, left, straight, right)</li>
+<li>开的时候注意避障，但是不考虑红绿灯跟停止线</li>
+</ul>
+</li>
+<li>physical system<ul>
+<li>command只有三个（left, straight, right）</li>
+<li>训练的时候用三个相机的图像，测试的时候只用中间相机的图像</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-实验"><a href="#5-实验" class="headerlink" title="5. 实验"></a>5. 实验</h4><ul>
+<li>仿真实验<ul>
+<li>回合（episode）成功的标志为agent在规定的时间内到达终点</li>
+<li>成功率利用没有违规行驶的平均距离来衡量（？？？距离怎么转换成百分比）</li>
+<li>训练集2h，其中10%包含injected noise（噪声怎么加入不明白???）,但是赵老师那边读的论文最好训练时间为10h，过长过短都不好</li>
+</ul>
+</li>
+<li>物理实验<ul>
+<li>路口，车辆离开路面不能超过5秒。</li>
+<li>模型测试是在overcast weather，但是数据采集是在sunny weather</li>
+</ul>
+</li>
+<li>结果<ul>
+<li>对比了几种不同的模型<ul>
+<li>command的输入位置不同，有无噪声一共四种</li>
+</ul>
+</li>
+<li>说明了noise injection和data augmentation的重要性</li>
+<li>在两种天气（阴天，晴天）和三种环境进行了测试</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-讨论"><a href="#6-讨论" class="headerlink" title="6. 讨论"></a>6. 讨论</h4><p> <strong>自然语言处理</strong></p>
+<p>人类与机器人的自然语言交流已经在相关文献进行研究（文献5，14，24，34，35）。本文也说将来会把unstructured natural language communication with autonomous vehicles 作为一个重点研究方向。</p>
+<h4 id="7-参考文献"><a href="#7-参考文献" class="headerlink" title="7. 参考文献"></a>7. 参考文献</h4><p><strong>数据集获得</strong> </p>
+<p>[4] M. Bojarski, D. D. Testa, D. Dworakowski, B. Firner, B. Flepp, P. Goyal, L. D. Jackel, M. Monfort, U. Muller, J. Zhang, X. Zhang, J. Zhao, and K. Zieba. End to end learning for self-driving cars. arXiv:1604.07316, 2016 </p>
+<p>[29] S. Ross, G. J. Gordon, and J. A. Bagnell. A reduction of imitation learning and structured prediction to no-regret online learning. In AISTATS, 2011.</p>
+<p><strong>人类指导机器人行为</strong></p>
+<p>[5] A. Broad, J. Arkin, N. Ratliff, T. Howard, and B. Argall. Realtime natural language corrections for assistive robotic manipulators. International Journal of Robotics Research, 2017. </p>
+<p>[14] S. Hemachandra, F. Duvallet, T. M. Howard, N. Roy, A. Stentz, and M. R. Walter. Learning models for following natural language directions in unknown environments. In ICRA, 2015. </p>
+<p>[24] C. Matuszek, L. Bo, L. Zettlemoyer, and D. Fox. Learning from unscripted deictic gesture and language for human-robot interactions. In AAAI, 2014. </p>
+<p>[34] S. Tellex, T. Kollar, S. Dickerson, M. R. Walter, A. G. Banerjee, S. J. Teller, and N. Roy. Understanding natural language commands for robotic navigation and mobile manipulation. In AAAI, 2011. </p>
+<p>[35] M. R. Walter, S. Hemachandra, B. Homberg, S. Tellex, and S. J. Teller. Learning semantic maps from natural language descriptions. In RSS, 2013.</p>
+<p><strong>与本文所做工作类似</strong></p>
+<p>[27] D. Pomerleau. ALVINN: An autonomous land vehicle in a neural network. In NIPS, 1988. </p>
+<p>[22] Y. LeCun, U. Muller, J. Ben, E. Cosatto, and B. Flepp. Off-road obstacle avoidance through end-to-end learning. In NIPS, 2005. </p>
+<p>[6] C. Chen, A. Seff, A. L. Kornhauser, and J. Xiao. DeepDriving: Learning affordance for direct perception in autonomous driving. In ICCV, 2015. </p>
+<p>[36] J. Zhang and K. Cho. Query-efficient imitation learning for end-to-end simulated driving. In AAAI, 2017 </p>
+<p>[4] M. Bojarski, D. D. Testa, D. Dworakowski, B. Firner, B. Flepp, P. Goyal, L. D. Jackel, M. Monfort, U. Muller, J. Zhang, X. Zhang, J. Zhao, and K. Zieba. End to end learning for self-driving cars. arXiv:1604.07316, 2016 </p>
+<h4 id="文献6-DeepDriving-Learning-affordance-for-direct-perception-in-autonomous-driving"><a href="#文献6-DeepDriving-Learning-affordance-for-direct-perception-in-autonomous-driving" class="headerlink" title="文献6 DeepDriving: Learning affordance for direct perception in autonomous driving"></a>文献6 DeepDriving: Learning affordance for direct perception in autonomous driving</h4><p>Chen, C., Seff, A., Kornhauser, A., &amp; Xiao, J. (2015). Deepdriving: Learning affordance for direct perception in autonomous driving. In <em>Proceedings of the IEEE International Conference on Computer Vision</em> (pp. 2722-2730).</p>
+<p>  提出三种paradigms基于视觉的自动驾驶     </p>
+<ol>
+<li>​         <em>Mediated Perception</em> parses every scene into structured data and          derives decision from that       </li>
+<li>​         <em>Behaviour Reflex</em> maps directly from input image to driving          control using deep learning       </li>
+<li><p>​         <em>Direct Perception</em> maps input to a small number of perception          indicators and make a driving decision       </p>
+<p>本文属于第三种，文中关于距离的限制可以借鉴，那样能保证车走在路中心   </p>
+</li>
+</ol>
+<h4 id="文献22-Off-road-obstacle-avoidance-through-end-to-end-learning"><a href="#文献22-Off-road-obstacle-avoidance-through-end-to-end-learning" class="headerlink" title="文献22 Off-road obstacle avoidance through end-to-end learning"></a>文献22 Off-road obstacle avoidance through end-to-end learning</h4><h5 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h5><ul>
+<li><p>end-to-end网络将原始输入图像映射为方向盘转角。</p>
+</li>
+<li><p>在各种地形、天气、光照、障碍物类型下进行数据采集训练。</p>
+<ul>
+<li>数据收集是15帧每秒</li>
+</ul>
+</li>
+<li><p>小车安装两个前向无线彩色相机，连接远程电脑对视频进行处理。</p>
+</li>
+<li>网络为6层卷积网络<ul>
+<li>卷积神经网络适合这个问题的原因，局部和稀疏的连接结构允许处理高分辨率的图像</li>
+<li>在训练数据有限的情况下能学习相关的局部特征</li>
+</ul>
+</li>
+<li>车速2 m/s</li>
+</ul>
+<h4 id="文献36-Query-Efficient-Imitation-Learning-for-End-to-End-Simulated-Driving"><a href="#文献36-Query-Efficient-Imitation-Learning-for-End-to-End-Simulated-Driving" class="headerlink" title="文献36 Query-Efficient Imitation Learning for End-to-End Simulated Driving"></a>文献36 Query-Efficient Imitation Learning for End-to-End Simulated Driving</h4><p> Zhang, J., &amp; Cho, K. (2017, February). Query-efficient imitation learning for end-to-end simulated driving. In <em>Thirty-First AAAI Conference on Artificial Intelligence</em>.</p>
+<p>A human driver (reference policy) cannot cover all situations in data. This paper introduces imitation learning for AD, where a CNN learns a primary policy and together with the reference policy iterate to generate more data. Approach based on DAgger A safety policy, estimated by an additional FCN, predicts, if it is safe for a NN to drive. Evaluated on TORCS only.</p>
+<ul>
+<li>Architecture: 6-layer CNN, 2 layer FCN</li>
+<li>Input: 160x72 image (simulated in TORCS), Conv5</li>
+<li>Output: Steering angle, safe/unsafe</li>
+</ul>
+<h3 id="Virtual-to-Real-Reinforcement-Learning-for-Autonomous-Driving"><a href="#Virtual-to-Real-Reinforcement-Learning-for-Autonomous-Driving" class="headerlink" title="Virtual to Real Reinforcement Learning for Autonomous Driving"></a>Virtual to Real Reinforcement Learning for Autonomous Driving</h3><p>Pan, X. , You, Y. , Wang, Z. , &amp; Lu, C. . (2017). Virtual to real reinforcement learning for autonomous driving.</p>
+<p>Due to training autonomous driving vehicle with reinforcement learning in real environment involves non-affordable trial-and-error, the VISRI can convert virtual image input into synthetic realistic images. Then given realistic frames as input, driving policy trained by reinforcement learning can nicely adapt to real world driving.</p>
+<ul>
+<li><p>Scene Parsing</p>
+<ul>
+<li>文献16中采用deep convolution neural network or fully convolution neural network</li>
+<li>本文中，采用SegNet，网络结构可参考文献2，由两部分组成<ul>
+<li>第一部分是an encoder，which consists of Convolutional, Batch Normalization, ReLU and max pooling layers</li>
+<li>第二部分是decoder, which replaces the pooling layers with upsampling layers</li>
+</ul>
+</li>
+<li>训练网络使用的数据集为CityScape dataset（文献7）<ul>
+<li>有11类，训练30000次</li>
+</ul>
+</li>
+<li>实际使用数据集为文献5中<ul>
+<li>将里面45k张图像都进行了分割</li>
+</ul>
+</li>
+</ul>
+<p>总结：分割网络先在CityScape dataset上训练好，然后将真实dataset中部分拿出来进行supervised learning model的训练，剩下部分进行test。</p>
+</li>
+</ul>
+<p>提到模仿学习里面的一个通病covariate shift problem(文献20)</p>
+<ul>
+<li>结果<ul>
+<li>比baseline好，但是没有supervised method好，因为它需要大量标注好的数据进行训练</li>
+</ul>
+</li>
+</ul>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>[2] Vijay Badrinarayanan, Alex Kendall, and Roberto Cipolla. Segnet: A deep convolutional encoder-decoder architecture for image segmentation. arXiv preprint arXiv:1511.00561, 2015. </p>
+<p>[5] Sully Chen. Autopilot-tensorflow, 2016. URL <a href="https://github.com/SullyChen/Autopilot-TensorFlow" target="_blank" rel="noopener">https://github.com/SullyChen/Autopilot-TensorFlow</a>. </p>
+<p>[7] Marius Cordts, Mohamed Omran, Sebastian Ramos, Timo Rehfeld, Markus Enzweiler, Rodrigo Benenson, Uwe Franke, Stefan Roth, and Bernt Schiele. The cityscapes dataset for semantic urban scene understanding. CoRR, abs/1604.01685, 2016. URL <a href="http://arxiv.org/abs/1604.01685" target="_blank" rel="noopener">http://arxiv.org/abs/1604.01685</a>. </p>
+<p>[16] Jonathan Long, Evan Shelhamer, and Trevor Darrell. Fully convolutional networks for semantic segmentation. In The IEEE Conference on Computer Vision and Pattern Recognition (CVPR), June 2015. </p>
+<h3 id="Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving"><a href="#Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving" class="headerlink" title="Exploring the Limitations of Behavior Cloning for Autonomous Driving"></a>Exploring the Limitations of Behavior Cloning for Autonomous Driving</h3><p>多帧，</p>
+<h3 id="自然语言处理相关文献（Natural-Language-Processing）"><a href="#自然语言处理相关文献（Natural-Language-Processing）" class="headerlink" title="自然语言处理相关文献（Natural Language Processing）"></a>自然语言处理相关文献（Natural Language Processing）</h3><h4 id="Real-Time-Natural-Language-Corrections-for-Assistive-Robotic-Manipulators"><a href="#Real-Time-Natural-Language-Corrections-for-Assistive-Robotic-Manipulators" class="headerlink" title="Real-Time Natural Language Corrections for Assistive Robotic Manipulators"></a>Real-Time Natural Language Corrections for Assistive Robotic Manipulators</h4><p>Broad, A., Arkin, J., Ratliff, N., Howard, T., &amp; Argall, B. (2017). Real-time natural language corrections for assistive robotic manipulators. <em>The International Journal of Robotics Research</em>, <em>36</em>(5-7), 684-698.</p>
+<h5 id="主要参考点"><a href="#主要参考点" class="headerlink" title="主要参考点"></a>主要参考点</h5><ul>
+<li>利用Amazon Mechanical Turk进行数据收集</li>
+<li>开源的语音到文本软件（speech-to-text）结合一个Kinova Robotics MICO机械臂得到一个端到端的系统</li>
+<li>通过限制机器人需要理解的语言和动作来进行简化</li>
+<li>DCG模型</li>
+</ul>
+<h4 id="Learning-Models-for-Following-Natural-Language-Directions-in-Unknown-Environments"><a href="#Learning-Models-for-Following-Natural-Language-Directions-in-Unknown-Environments" class="headerlink" title="Learning Models for Following Natural Language Directions in Unknown Environments"></a>Learning Models for Following Natural Language Directions in Unknown Environments</h4><p>Hemachandra, S., Duvallet, F., Howard, T. M., Roy, N., Stentz, A., &amp; Walter, M. R. (2015, May). Learning models for following natural language directions in unknown environments. In <em>2015 IEEE International Conference on Robotics and Automation (ICRA)</em> (pp. 5608-5615). IEEE.</p>
+<p>本文提出了一种新的框架能够使机器人在<strong>未知环境</strong>下根据自然语言实现导航。主要有三个算法做出了贡献：</p>
+<ul>
+<li>学习语言理解模型，能够通过command理解环境的标注和期望的行为</li>
+<li>估计-理论算法，通过将推断得到的注释视为对环境的观察，并将它们融合为来自机器人传感器流的观察来学习假设世界模型的分布。</li>
+<li>从人类示范中学到的置信空间策略，该政策直接进行世界模型的分配来确定合适的导航行动</li>
+</ul>
+<h5 id="前期工作"><a href="#前期工作" class="headerlink" title="前期工作"></a>前期工作</h5><ul>
+<li><p>这篇文章是在作者前期的基础上进一步改进得到的（前期工作见文献10）</p>
+</li>
+<li><p>对于Imitation Learning Formulation，有一个prior work 在文献12中。</p>
+</li>
+<li><p>文献23利用data aggregation 算法对策略进行训练</p>
+</li>
+</ul>
+<h5 id="参考文献-1"><a href="#参考文献-1" class="headerlink" title="参考文献"></a>参考文献</h5><p>  [10] F. Duvallet, M. R. Walter, T. Howard, S. Hemachandra, J. Oh, S. Teller, N. Roy, and A. Stentz, “Inferring maps and behaviors from natural language instructions,” in Proc. Int’l. Symp. on Experimental Robotics<br>(ISER), 2014. </p>
+<p>[12] F. Duvallet, T. Kollar, and A. Stentz, “Imitation learning for natural language direction following through unknown environments,” in Proc. IEEE Int’l Conf. on Robotics and Automation (ICRA), 2013. </p>
+<p>[23] S. Ross, G. J. Gordon, and J. A. Bagnell, “A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning,” in International Conference on Artificial Intelligence and Statistics, 2011. </p>
+<h4 id="Imitation-Learning-for-Natural-Language-Direction-Following-through-Unknown-Environments"><a href="#Imitation-Learning-for-Natural-Language-Direction-Following-through-Unknown-Environments" class="headerlink" title="Imitation Learning for Natural Language Direction Following through Unknown Environments"></a>Imitation Learning for Natural Language Direction Following through Unknown Environments</h4><p>Duvallet, F., Kollar, T., &amp; Stentz, A. (2013, May). Imitation learning for natural language direction following through unknown environments. In <em>2013 IEEE International Conference on Robotics and Automation</em> (pp. 1047-1053). IEEE.</p>
+<p>本文主要解决问题为：没有经过培训的能通过自然语言也能对机器人进行控制</p>
+<p>DAGGER一个模仿学习框架</p>
+<h3 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h3><h4 id="Gaze-Training-by-Modulated-Dropout-Improves-Imitation-Learning"><a href="#Gaze-Training-by-Modulated-Dropout-Improves-Imitation-Learning" class="headerlink" title="Gaze Training by Modulated Dropout Improves Imitation Learning"></a>Gaze Training by Modulated Dropout Improves Imitation Learning</h4><p>Chen, Y., Liu, C., Tai, L., Liu, M., &amp; Shi, B. E. (2019). Gaze Training by Modulated Dropout Improves Imitation Learning. <em>arXiv preprint arXiv:1904.08377</em>.</p>
+<ul>
+<li><p>强化学习需要事先顶一个奖励函数，而模仿学习不需要。</p>
+</li>
+<li><p>模仿学习里面最典型的就是通过监督学习的行为克隆（behavioural cloning through supervised learning）</p>
+<ul>
+<li>行为克隆是一个teacher-students paradigm</li>
+</ul>
+</li>
+</ul>
+<h5 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h5><ul>
+<li><p>文献7，8通过experts’ gaze对novice human learners的影响，因此它是很有前景的研究通过行为克隆训练的深度驾驶网络是否能收益于expert gaze patterns。</p>
+</li>
+<li><p>如何将gaze information与deep neural networks结合起来，最近的工作可参考文献9，10（<em>Pix2Pix</em>）</p>
+</li>
+<li>一个conditional adversarial network被训练用来估计人类眼睛注意力的分布在驾驶的时候，然后本文<strong>利用这个估计的注意力分布来调整dropout概率在不同的空间位置</strong>。</li>
+<li>如何评估这种模型的泛化性，文献12，13有介绍</li>
+<li>文献14有说conditional imitation learning（deep multi-branch imitation network）这个系统不能泛化到未知环境中的缺点</li>
+<li>gaze in autonomous driving<ul>
+<li>文献18也在探索human gaze对自动驾驶的作用的影响</li>
+<li>文献19提出一个多分支深度神经网络来预测eye gaze在城市驾驶场景中</li>
+</ul>
+</li>
+</ul>
+<p><strong>dropout</strong> ：指在深度学习网络的训练过程中，按照一定的概率将一部分神经网络单元暂时从网络中丢弃，相当于从原始的网络中找到一个更瘦的网络。</p>
+<h5 id="实验设计"><a href="#实验设计" class="headerlink" title="实验设计"></a>实验设计</h5><ul>
+<li>数据收集，gaze数据通过一个远程的眼部追踪器Tobii Pro X60获得，一共5个场景，一个场景重复4次实验</li>
+<li>训练和测试<ul>
+<li>对于gaze network， Track1 和Track2 用来训练（3500 images）</li>
+<li>对于imitation network，Track1和Track2各三个trial用来训练（40k images），剩下两个加其余场景的用来测试</li>
+<li>考虑到robustness，training数据里面有10%的数据为异常数据（recovery from drift），另外，也进行data augmentations，比如random changes in contrast, brightness and gamma online for each image</li>
+</ul>
+</li>
+</ul>
+<h5 id="Uncertainty-in-Deep-Learning"><a href="#Uncertainty-in-Deep-Learning" class="headerlink" title="Uncertainty in Deep Learning"></a>Uncertainty in Deep Learning</h5><p>关于不确定性的研究人员比较公认地将不确定性分为两类，一类是指事物内在的不确定性（Aleatory Uncertainty），另一类是指对事物的认知不完整所导致的不确定性(Epistemic Uncertainty)。在这样的一个分类基础上，人们在量化这些不确定性时采用了不同的数学模型。对于前者，大家比较公认的是采用概率统计的办法，而针对后者，其数学模型可谓形形色色、纷纷扰扰，用的较多的有主观概率（subjective probability, Bayesian statistics）、模糊集（fuzzy set, possibility theory）、随机集（random set, imprecise probability）、凸集（convex set, info-gap）、证据理论（evidence theory）或区间理论（interval theory）等等。</p>
+<h5 id="参考文献-2"><a href="#参考文献-2" class="headerlink" title="参考文献"></a>参考文献</h5><p>[7] S. J. Vine, R. S. Masters, J. S. McGrath, E. Bright, and M. R. Wilson, “Cheating experience: Guiding novices to adopt the gaze strategies of experts expedites the learning of technical laparoscopic skills,” Surgery, vol. 152, no. 1, pp. 32–40, 2012.<br>[8] Y. Yamani, P. Bıc¸aksız, D. B. Palmer, J. M. Cronauer, and S. Samuel, “Following expert’s eyes: Evaluation of the effectiveness of a gazebased training intervention on young drivers’ latent hazard anticipation skills,” in 9th International Driving Symposium on Human Factors in Driver Assessment, Training, and Vehicle Design, 2017.</p>
+<p><strong>如何将gaze information与deep neural networks结合起来</strong> </p>
+<p>[9] R. Zhang, Z. Liu, L. Zhang, J. A. Whritner, K. S. Muller, M. M. Hayhoe, and D. H. Ballard, “Agil: Learning attention from human for visuomotor tasks,” arXiv preprint arXiv:1806.03960, 2018.<br>[10] C. Liu, Y. Chen, L. Tai, H. Ye, M. Liu, and B. E. Shi, “A gaze model improves autonomous driving,” in Proceedings of the 2019 ACM Symposium on Eye Tracking Research &amp; Applications. ACM, 2019, to appear </p>
+<p>[12] R. McAllister, Y. Gal, A. Kendall, M. van der Wilk, A. Shah, R. Cipolla, and A. Weller, “Concrete problems for autonomous vehicle safety: Advantages of bayesian deep learning,” in Proceedings of the Twenty-Sixth International Joint Conference on Artificial Intelligence, IJCAI-17, 2017, pp. 4745–4753. [Online]. Available:<br><a href="https://doi.org/10.24963/ijcai.2017/661" target="_blank" rel="noopener">https://doi.org/10.24963/ijcai.2017/661</a><br>[13] A. Kendall, V. Badrinarayanan, and R. Cipolla, “Bayesian segnet: Model uncertainty in deep convolutional encoder-decoder architectures for scene understanding,” arXiv preprint arXiv:1511.02680, 2015. </p>
+<p>[14] X. Liang, T. Wang, L. Yang, and E. Xing, “Cirl: Controllable imitative reinforcement learning for vision-based self-driving,” in Proceedings of the European Conference on Computer Vision (ECCV), 2018, pp.<br>584–599. </p>
+<p><strong>gaze in autonomous driving</strong> </p>
+<p>[18] S. Alletto, A. Palazzi, F. Solera, S. Calderara, and R. Cucchiara, “Dr (eye) ve: a dataset for attention-based tasks with applications to autonomous and assisted driving,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops, 2016, pp. 54–60.<br>[19] A. Palazzi, D. Abati, S. Calderara, F. Solera, and R. Cucchiara, “Predicting the driver’s focus of attention: the dr (eye) ve project,” arXiv preprint arXiv:1705.03854, 2017. </p>
+<h4 id="Predicting-the-Driver’s-Focus-of-Attention-the-DR-eye-VE-Project"><a href="#Predicting-the-Driver’s-Focus-of-Attention-the-DR-eye-VE-Project" class="headerlink" title="Predicting the Driver’s Focus of Attention: the DR(eye)VE Project"></a>Predicting the Driver’s Focus of Attention: the DR(eye)VE Project</h4><p>Palazzi, A., Abati, D., Calderara, S., Solera, F., &amp; Cucchiara, R. (2018). Predicting the Driver’s Focus of Attention: the DR (eye) VE Project. <em>IEEE transactions on pattern analysis and machine intelligence</em>.</p>
+<p>本文目的是评估一个驾驶员在开车时，视野内哪部分对完成任务比较重要</p>
+<ul>
+<li><p>提出一个multi-branch deep architecture由三部分组成：raw video, motion and scene semantics。</p>
+</li>
+<li><p>也介绍一个DR(eye)VE数据集，现今可获得的最大眼部追踪标注数据集(500k registered frames)</p>
+<ul>
+<li>in different traffic and weather conditions</li>
+<li>approximate 6 hours</li>
+<li>recorded by an accurate eye tracking device and a roof-mounted camera</li>
+<li>The DR(eye)VE data richness enables us to train an end-to-end deep network that predicts salient<br>regions in car-centric driving videos.  </li>
+</ul>
+</li>
+<li>可应用于人-车交互和驾驶员注意力分析等</li>
+</ul>
+<h5 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h5><p>本文从两部分获得这个结果：</p>
+<ol>
+<li>在不同的情况和场景下研究数据驱动的驾驶员注视位置，发现场景的语义、速度和自下而上的特征都会影响驾驶员的注视</li>
+<li>提倡一种适合不同驾驶员的通用gaze pattern</li>
+</ol>
+<p>网络由three branches 组成：</p>
+<ol>
+<li>场景的视觉信息</li>
+<li>运动信息（光流）</li>
+<li>语义分割</li>
+</ol>
+<h5 id="关于visual-attention"><a href="#关于visual-attention" class="headerlink" title="关于visual attention"></a>关于visual attention</h5><p>文献20是关于视觉注意力机制的一篇综述</p>
+<p>有两个计算模型用于FoA预测</p>
+<ul>
+<li>top-down<ul>
+<li>aim at highlighting objects and cues that could be meaningful in the context of a given task</li>
+<li>methods are known as task-driven（文献9，49，50）</li>
+<li>integrate semantic contextual information in the attention prediction process(文献64)</li>
+</ul>
+</li>
+<li>bottom-up<ul>
+<li>capture salient objects or events naturally popping out in the image</li>
+</ul>
+</li>
+</ul>
+<h5 id="参考文献-3"><a href="#参考文献-3" class="headerlink" title="参考文献"></a>参考文献</h5><h3 id="Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving-1"><a href="#Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving-1" class="headerlink" title="Exploring the Limitations of Behavior Cloning for Autonomous Driving"></a>Exploring the Limitations of Behavior Cloning for Autonomous Driving</h3><p>需要看的文献27，29，44</p>
+<ul>
+<li>validation datasets的建立参考文献9，</li>
+</ul>
+<p>Appendix</p>
+<ul>
+<li>数据收集过程中不变道和超车</li>
+</ul>
+<h1 id="3-Direct-Perception"><a href="#3-Direct-Perception" class="headerlink" title="3. Direct Perception"></a>3. Direct Perception</h1><h2 id="Conditional-Affordance-Learning-for-Driving-in-Urban-Environments-2018-ETH"><a href="#Conditional-Affordance-Learning-for-Driving-in-Urban-Environments-2018-ETH" class="headerlink" title="Conditional Affordance Learning for Driving in Urban Environments(2018-ETH)"></a>Conditional Affordance Learning for Driving in Urban Environments(2018-ETH)</h2><h2 id="DeepDriving-Learning-Affordance-for-Direct-Perception-in-Autonomous-Driving-（2015-ICCV，Princeton-University）"><a href="#DeepDriving-Learning-Affordance-for-Direct-Perception-in-Autonomous-Driving-（2015-ICCV，Princeton-University）" class="headerlink" title="DeepDriving: Learning Affordance for Direct Perception in Autonomous Driving （2015 ICCV，Princeton University）"></a>DeepDriving: Learning Affordance for Direct Perception in Autonomous Driving （2015 ICCV，Princeton University）</h2><h3 id="2-Learning-affordance-for-driving-perception"><a href="#2-Learning-affordance-for-driving-perception" class="headerlink" title="2. Learning affordance for driving perception"></a>2. Learning affordance for driving perception</h3><ul>
+<li>training phase<ul>
+<li>collect screenshots –&gt;train model to estimate affordance in a supervised learning manner</li>
+</ul>
+</li>
+<li>test phase<ul>
+<li>the trained model takes driving scene image and estimates the affordance indicators for driving</li>
+<li>a driving controller processes the indicators and computes the steering and acceleration/brake commands</li>
+<li>ground truth labels –&gt; evaluate the system’s performance</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-1-Mapping-from-an-image-to-affordance"><a href="#2-1-Mapping-from-an-image-to-affordance" class="headerlink" title="2.1 Mapping from an image to affordance"></a>2.1 Mapping from an image to affordance</h4><p>focus on highway driving with multiple lanes</p>
+<p>Highway driving actions:</p>
+<ul>
+<li>following the lane center line</li>
+<li>changing lanes or slowing down to avoid collisions with the preceding cars</li>
+</ul>
+<p>three types of indicators:</p>
+<ul>
+<li>heading angle</li>
+<li>the distance to the nearby lane marking</li>
+<li>the distance to the preceding cars</li>
+</ul>
+<p>In total have 13 affordance indicators </p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -199,7 +547,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Path-Planning"><span class="toc-text">1. Path Planning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Neural-Path-Planning-Fixed-Time-Near-Optimal-Path-Generation-via-Oracle-Imitation"><span class="toc-text">Neural Path Planning: Fixed Time, Near-Optimal Path Generation via Oracle Imitation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Imitation-Learning"><span class="toc-text">2. Imitation Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Driving-Policy-Transfer-via-Modularity-and-Abstraction"><span class="toc-text">Driving Policy Transfer via Modularity and Abstraction</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Path-Planning"><span class="toc-text">1. Path Planning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Neural-Path-Planning-Fixed-Time-Near-Optimal-Path-Generation-via-Oracle-Imitation"><span class="toc-text">Neural Path Planning: Fixed Time, Near-Optimal Path Generation via Oracle Imitation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Imitation-Learning"><span class="toc-text">2. Imitation Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-中文笔记"><span class="toc-text">2.1 中文笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-相关论文"><span class="toc-text">2.2 相关论文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Driving-Policy-Transfer-via-Modularity-and-Abstraction"><span class="toc-text">Driving Policy Transfer via Modularity and Abstraction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-创新点"><span class="toc-text">1. 创新点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-使用的方法"><span class="toc-text">2. 使用的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-评估"><span class="toc-text">3. 评估</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-结论"><span class="toc-text">4. 结论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-相关工作"><span class="toc-text">5. 相关工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-参考文献"><span class="toc-text">6. 参考文献</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#End-to-end-Driving-via-Conditional-Imitation-Learning"><span class="toc-text">End-to-end Driving via Conditional Imitation Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-基本概念"><span class="toc-text">1. 基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-相关工作"><span class="toc-text">2. 相关工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Conditional-Imitation-Learning介绍-amp-Methodology"><span class="toc-text">3. Conditional Imitation Learning介绍 &amp; Methodology</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-实验设置"><span class="toc-text">4. 实验设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-实验"><span class="toc-text">5. 实验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-讨论"><span class="toc-text">6. 讨论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-参考文献"><span class="toc-text">7. 参考文献</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文献6-DeepDriving-Learning-affordance-for-direct-perception-in-autonomous-driving"><span class="toc-text">文献6 DeepDriving: Learning affordance for direct perception in autonomous driving</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文献22-Off-road-obstacle-avoidance-through-end-to-end-learning"><span class="toc-text">文献22 Off-road obstacle avoidance through end-to-end learning</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#简要介绍"><span class="toc-text">简要介绍</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文献36-Query-Efficient-Imitation-Learning-for-End-to-End-Simulated-Driving"><span class="toc-text">文献36 Query-Efficient Imitation Learning for End-to-End Simulated Driving</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Virtual-to-Real-Reinforcement-Learning-for-Autonomous-Driving"><span class="toc-text">Virtual to Real Reinforcement Learning for Autonomous Driving</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving"><span class="toc-text">Exploring the Limitations of Behavior Cloning for Autonomous Driving</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自然语言处理相关文献（Natural-Language-Processing）"><span class="toc-text">自然语言处理相关文献（Natural Language Processing）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Real-Time-Natural-Language-Corrections-for-Assistive-Robotic-Manipulators"><span class="toc-text">Real-Time Natural Language Corrections for Assistive Robotic Manipulators</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#主要参考点"><span class="toc-text">主要参考点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Learning-Models-for-Following-Natural-Language-Directions-in-Unknown-Environments"><span class="toc-text">Learning Models for Following Natural Language Directions in Unknown Environments</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#前期工作"><span class="toc-text">前期工作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#参考文献-1"><span class="toc-text">参考文献</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Imitation-Learning-for-Natural-Language-Direction-Following-through-Unknown-Environments"><span class="toc-text">Imitation Learning for Natural Language Direction Following through Unknown Environments</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意力机制"><span class="toc-text">注意力机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Gaze-Training-by-Modulated-Dropout-Improves-Imitation-Learning"><span class="toc-text">Gaze Training by Modulated Dropout Improves Imitation Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#相关研究"><span class="toc-text">相关研究</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#实验设计"><span class="toc-text">实验设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Uncertainty-in-Deep-Learning"><span class="toc-text">Uncertainty in Deep Learning</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#参考文献-2"><span class="toc-text">参考文献</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Predicting-the-Driver’s-Focus-of-Attention-the-DR-eye-VE-Project"><span class="toc-text">Predicting the Driver’s Focus of Attention: the DR(eye)VE Project</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Introduction"><span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#关于visual-attention"><span class="toc-text">关于visual attention</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#参考文献-3"><span class="toc-text">参考文献</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploring-the-Limitations-of-Behavior-Cloning-for-Autonomous-Driving-1"><span class="toc-text">Exploring the Limitations of Behavior Cloning for Autonomous Driving</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Direct-Perception"><span class="toc-text">3. Direct Perception</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conditional-Affordance-Learning-for-Driving-in-Urban-Environments-2018-ETH"><span class="toc-text">Conditional Affordance Learning for Driving in Urban Environments(2018-ETH)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DeepDriving-Learning-Affordance-for-Direct-Perception-in-Autonomous-Driving-（2015-ICCV，Princeton-University）"><span class="toc-text">DeepDriving: Learning Affordance for Direct Perception in Autonomous Driving （2015 ICCV，Princeton University）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Learning-affordance-for-driving-perception"><span class="toc-text">2. Learning affordance for driving perception</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Mapping-from-an-image-to-affordance"><span class="toc-text">2.1 Mapping from an image to affordance</span></a></li></ol></li></ol></li></ol></li></ol>
   </div>
 </aside>
   
