@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>博士课题 | Attention | 丹丹和丫丫的个人空间</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Attention,attention,imitation learning,">
+  
+
+  
+  <meta name="description" content="董沅鑫的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"8rGlL6rrpuN3VfdSIrm0rRhD-gzGzoHsz","appkey":"OhkcQ13C4bVojSxY2IhbHo8v","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-8",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+    <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style2.css">
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">AIDANGYA</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">HOME PAGE</a>
+      
+        <a href="/archives/" target="_self">ARCHIVES</a>
+      
+        <a href="/tags/" target="_self">TAGS</a>
+      
+        <a href="/categories/" target="_self">CATEGORIES</a>
+      
+        <a href="/friends/" target="_self">FRIENDS</a>
+      
+        <a href="/about/" target="_self">ABOUT</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/AIwuya/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            HOME PAGE
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            ARCHIVES
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            TAGS
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            CATEGORIES
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            FRIENDS
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            ABOUT
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-17
+    </span>
+    
+      <span>
+        | <a href="/categories/Attention/"><i class="fa fa-bookmark"></i>Attention</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    博士课题 | Attention
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="Attention-based-Hierarchical-Deep-Reinforcement-Learning-for-Lane-Change-Behaviors-in-Autonomous-Driving-2019CVPR"><a href="#Attention-based-Hierarchical-Deep-Reinforcement-Learning-for-Lane-Change-Behaviors-in-Autonomous-Driving-2019CVPR" class="headerlink" title="Attention-based Hierarchical Deep Reinforcement Learning for Lane Change Behaviors in Autonomous Driving(2019CVPR)"></a>Attention-based Hierarchical Deep Reinforcement Learning for Lane Change Behaviors in Autonomous Driving(2019CVPR)</h1><p>Chen, Yilun, et al. “Attention-Based Hierarchical Deep Reinforcement Learning for Lane Change Behaviors in Autonomous Driving.” <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops</em>. 2019.</p>
+<p>只看了文中关于attention部分的内容，其中将attention分为了两个部分：temporal attention和spatial attention 。期待这篇文章后续作者能将代码开源，现在没有代码，不过中间参考的三篇论文都是可以找到代码的</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1560756116792.png" alt="1560756116792"></p>
+<ul>
+<li><p>Temporal attention </p>
+<ul>
+<li><p>learns to weight the importance of previous frames </p>
+</li>
+<li><p>文中提到说从单独的一帧照片不能得到足够的环境信息来得到驾驶行为。</p>
+<p>变道时周车速度是一个重要因素，这时的驾驶行为是一个POMDP.</p>
+<p>本文种利用的是LSTM作为基础的RNN网络来对时间维度的信息进行处理 </p>
+</li>
+<li><p>改变<em>T</em>来该改变模型考虑的历史时间序列</p>
+</li>
+<li><p>参考文献</p>
+<ul>
+<li>Recurrent neural network regularization （LSTM）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Spatial attention</p>
+<ul>
+<li>learns the importance of different locations in the image</li>
+<li>现在研究又分为两种models<ul>
+<li>hard attention</li>
+<li>soft attention，本文使用该种模型</li>
+</ul>
+</li>
+<li>参考文献<ul>
+<li>Deep attention recurrent q-network （soft attention） </li>
+<li>Show, attend and tell: Neural image caption generation with visual attention. (提出两种models)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Attention-based-Hierarchical-Deep-Reinforcement-Learning-for-Lane-Change-Behaviors-in-Autonomous-Driving-2019CVPR"><span class="toc-text">Attention-based Hierarchical Deep Reinforcement Learning for Lane Change Behaviors in Autonomous Driving(2019CVPR)</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/关于attention/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/attention/"><i class="fa fa-tags"></i>attention</a>
+     
+      <a href="/tags/imitation-learning/"><i class="fa fa-tags"></i>imitation learning</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://morvanzhou.github.io/" target="_blank">莫烦PYTHON</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://spinningup.openai.com/en/latest/index.html" target="_blank">OpenAI in Deep RL</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://www.zhihu.com/people/xiao-ya-84-95/activities" target="_blank">知乎</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: wuya_93@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.jpg" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/轨迹预测调研/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/ICRA2019阅读笔记/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+      <script src="/script.js"></script>
+<script src="/script2.js"></script>
+    
+  </body>
+</html>

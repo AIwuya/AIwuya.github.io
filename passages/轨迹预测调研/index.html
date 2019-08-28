@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Dong Yuanxin">
+  
+  
+  <title>Machine Behaviour | Trajectory prediction | 丹丹和丫丫的个人空间</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Trajectory Prediction,POMDP,">
+  
+
+  
+  <meta name="description" content="董沅鑫的小站">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"8rGlL6rrpuN3VfdSIrm0rRhD-gzGzoHsz","appkey":"OhkcQ13C4bVojSxY2IhbHo8v","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2019-03-8",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Dong Yuanxin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: ""
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+    <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style2.css">
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">AIDANGYA</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 安静写些东西</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">HOME PAGE</a>
+      
+        <a href="/archives/" target="_self">ARCHIVES</a>
+      
+        <a href="/tags/" target="_self">TAGS</a>
+      
+        <a href="/categories/" target="_self">CATEGORIES</a>
+      
+        <a href="/friends/" target="_self">FRIENDS</a>
+      
+        <a href="/about/" target="_self">ABOUT</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/AIwuya/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            HOME PAGE
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            ARCHIVES
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            TAGS
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            CATEGORIES
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            FRIENDS
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            ABOUT
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-22
+    </span>
+    
+      <span>
+        | <a href="/categories/Trajectory-Prediction/"><i class="fa fa-bookmark"></i>Trajectory Prediction</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Machine Behaviour | Trajectory prediction
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="IV2019论文"><a href="#IV2019论文" class="headerlink" title="IV2019论文"></a>IV2019论文</h1><h1 id="Decision-Making-for-Autonomous-Driving-considering-Interaction-and-Uncertain-Prediction-of-Surrounding-Vehicles"><a href="#Decision-Making-for-Autonomous-Driving-considering-Interaction-and-Uncertain-Prediction-of-Surrounding-Vehicles" class="headerlink" title="Decision Making for Autonomous Driving considering Interaction and Uncertain Prediction of Surrounding Vehicles"></a>Decision Making for Autonomous Driving considering Interaction and Uncertain Prediction of Surrounding Vehicles</h1><p>摘要：提出一种在线可用的POMDP框架，可预测操作不确定性和纵向的不确定性</p>
+<p>实现方法：</p>
+<ul>
+<li>需要V2V的能力</li>
+<li>point based solver—-TAPIR</li>
+</ul>
+<p>实验环境：连续状态空间，没有红绿灯的交叉路口</p>
+<p>未来研究方向展望：</p>
+<ul>
+<li>提高求解器的频率</li>
+<li>将该方法扩展道横向（lateral planning）</li>
+<li>结合最优的运动交互模型</li>
+</ul>
+<h1 id="Optimization-based-Tactical-Behavior-Planning-for-Autonomous-Freeway-Driving-in-Favor-of-the-Traffic-Flow"><a href="#Optimization-based-Tactical-Behavior-Planning-for-Autonomous-Freeway-Driving-in-Favor-of-the-Traffic-Flow" class="headerlink" title="Optimization-based Tactical Behavior Planning for Autonomous Freeway Driving in Favor of the Traffic Flow"></a>Optimization-based Tactical Behavior Planning for Autonomous Freeway Driving in Favor of the Traffic Flow</h1><p>摘要：提到说<strong>自车对周车运动状态的影响</strong>很少有人研究，大部分都是研究周车对自车的影响。本文提出一种最新的规划方法来应对整个交通系统的控制。通过<strong>迭代</strong> 的方法获得最优解而不是基于采样的方法。</p>
+<ul>
+<li>规划内容：变道和纵向加速</li>
+<li>为了减少求解空间，将action只用四个变量表示</li>
+<li>文中主要面向受控的高速公路（controlled-access highways），但是可以应用到别的场景</li>
+<li>在一个交通模拟器上进行的实验</li>
+<li>将车道变换跟加速度联合规划</li>
+</ul>
+<p>未来工作展望：扩展到感知和预测的不确定性</p>
+<h1 id="Predictive-Trajectory-Planning-in-Situations-with-Hidden-Road-Users-Using-Partially-Observable-Markov-Decision-Processes"><a href="#Predictive-Trajectory-Planning-in-Situations-with-Hidden-Road-Users-Using-Partially-Observable-Markov-Decision-Processes" class="headerlink" title="Predictive Trajectory Planning in Situations with Hidden Road Users Using Partially Observable Markov Decision Processes"></a>Predictive Trajectory Planning in Situations with Hidden Road Users Using Partially Observable Markov Decision Processes</h1><p>本文展示了一种方法来预测闭塞区域（occluded area, 就是传感器看不见的地方）的潜在交通参与者。PIMDP被用来确定车辆的纵向运动。</p>
+<p>在两个场景下进行实验：</p>
+<ul>
+<li>十字路口</li>
+<li>典型的城市工况</li>
+</ul>
+<p>生成视野需要计算时间，</p>
+<h1 id="Cooperative-Multi-Vehicle-Behavior-Coordination-for-Autonomous-Driving"><a href="#Cooperative-Multi-Vehicle-Behavior-Coordination-for-Autonomous-Driving" class="headerlink" title="* Cooperative Multi-Vehicle Behavior Coordination for Autonomous Driving"></a>* Cooperative Multi-Vehicle Behavior Coordination for Autonomous Driving</h1><p>德国TUM Alois Knoll，本文介绍了一个最新的行为规划和协作方法来计算多车合作的运动策略，</p>
+<p>three-step方法：</p>
+<ul>
+<li>首先忽略车车之间的交互</li>
+<li>利用混合完整性线性最优化方法解决参与者的共同最优化运动</li>
+<li>根据观察到的行为在线实时进行标定</li>
+</ul>
+<p>两个场景来进行展示和评估：</p>
+<ul>
+<li>an evasive maneuver  requiring vehicle interaction in detail</li>
+<li>intersection scenario</li>
+</ul>
+<p>能够解决cooperative behaviour和egoistic driver intentions，混合场景也都能解决</p>
+<h1 id="Multi-Controller-Architecture-for-Reliable-Autonomous-Vehicle-Navigation-Combination-of-Model-Driven-and-Data-Driven-Formalization"><a href="#Multi-Controller-Architecture-for-Reliable-Autonomous-Vehicle-Navigation-Combination-of-Model-Driven-and-Data-Driven-Formalization" class="headerlink" title="Multi-Controller Architecture for Reliable Autonomous Vehicle Navigation: Combination of Model-Driven and Data-Driven Formalization"></a>Multi-Controller Architecture for Reliable Autonomous Vehicle Navigation: Combination of Model-Driven and Data-Driven Formalization</h1><p>本文设计了一个多控制器结构（multi-controller architecture, MCA）,它有效的将基于模型的方法和AI方法结合起来。用于高速的navigation</p>
+<ul>
+<li>基于模型的方法主要用于路径规划和控制<ul>
+<li>analytical target set-points definition</li>
+<li>Lyapunov stability analysis</li>
+</ul>
+</li>
+<li>AI主要用于解决不确定环境和周车行为动态变化下的换道行为<ul>
+<li>Two-Sequential Level Bayesian Decision Network（TSLBDN）</li>
+</ul>
+</li>
+<li>轨迹预测+Dynamic Bayesian Network (DBN)来推断周车行为<ul>
+<li>dynamic target set-points </li>
+<li>elliptic limit-cycles</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：</strong> </p>
+<ul>
+<li>其中有个概念需要搞清，elliptic limit-cycles（椭圆极限环）？？</li>
+<li>贝叶斯网络需要了解？？<ul>
+<li>主要用intention估计</li>
+</ul>
+</li>
+<li>本文到底是基于模型还是基于数据驱动的搞明白？？</li>
+</ul>
+<h1 id="Trajectory-Planning-for-Automated-Vehicles-in-Overtaking-Scenarios"><a href="#Trajectory-Planning-for-Automated-Vehicles-in-Overtaking-Scenarios" class="headerlink" title="Trajectory Planning for Automated Vehicles in Overtaking Scenarios"></a>Trajectory Planning for Automated Vehicles in Overtaking Scenarios</h1><p>本文提出了一个用于大时间范围的实时超车轨迹规划算法。主要利用用于变道的路径跟踪算法和PI控制器。规划出来的轨迹满足动力学约束。</p>
+<ul>
+<li>利用概率卡尔曼滤波来进行预测所有交通参与者的位置</li>
+<li>路径跟随控制器来计算超车轨迹</li>
+<li>局部选择自车的圆半径，而不是全局选择一个半径，根据最优控制问题来使轨迹更加平滑，也使乘客更舒适</li>
+</ul>
+<h1 id="Learning-Interaction-Aware-Probabilistic-Driver-Behavior-Models-from-Urban-Scenarios"><a href="#Learning-Interaction-Aware-Probabilistic-Driver-Behavior-Models-from-Urban-Scenarios" class="headerlink" title="* Learning Interaction-Aware Probabilistic Driver Behavior Models from　Urban Scenarios"></a>* Learning Interaction-Aware Probabilistic Driver Behavior Models from　Urban Scenarios</h1><p>本文设计了一种通过学习的方法来建立行为模型。利用Markovian action models+深度神经网络来获得驾驶员的路线模型与周围环境信息。</p>
+<ul>
+<li>仅仅提前一个时间步长来进行预测，减少了学习的复杂性，使模型更简单更快</li>
+<li>结合基于粒子的算法，Monte Carlo tree search或者particle filtering</li>
+<li>将本方法与之前的dynamic Bayesian network进行了对比</li>
+</ul>
+<p><strong>总结：</strong> </p>
+<p>本文可以仔细看，改进的地方</p>
+<h1 id="Behavior-Planning-of-Autonomous-Cars-with-Social-Perception"><a href="#Behavior-Planning-of-Autonomous-Cars-with-Social-Perception" class="headerlink" title="Behavior Planning of Autonomous Cars with Social Perception"></a>Behavior Planning of Autonomous Cars with Social Perception</h1><p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1561372635783.png" alt="1561372635783"></p>
+<p>本文提出一种社会感知框架能够处理所有的路面参与者。基于MPC得到一个probabilistic planning framework，MPC的代价通过逆强化学习获得。获得的车辆行为具有防御性但不保守，也具有社会兼容性。该框架在一个具有sensor occlusion的场景中进行了验证。</p>
+<p><strong>总结：</strong></p>
+<ul>
+<li>sensor occlusion是什么意思，很多文章都有出现</li>
+</ul>
+<h1 id="Large-Scale-extraction-of-accurate-vehicle-trajectories-for-driving-behavior-learning"><a href="#Large-Scale-extraction-of-accurate-vehicle-trajectories-for-driving-behavior-learning" class="headerlink" title="Large-Scale extraction of accurate vehicle trajectories for driving behavior learning"></a>Large-Scale extraction of accurate vehicle trajectories for driving behavior learning</h1><p>因为如果要是想利用行为学习的方法，那么需要大的精确的数据集，表示车辆间的交互在各种状态下，本文提出一种完全自动和可扩展的框架来精确的提取车辆轨迹从一个固定的单目交通相机（数据没有进行标定）。</p>
+<ul>
+<li>有github代码</li>
+</ul>
+<p><strong>方法：</strong> </p>
+<ul>
+<li>利用最近object detection的进步，利用traditional tracking和3D position estimation方法，</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ul>
+<li>本文的工作是建立一个满足需求的学习驾驶行为数据集的第一步</li>
+<li>将平面图转换成鸟瞰图这个需要掌握？？</li>
+</ul>
+<h1 id="Intention-Estimation-For-Ramp-Merging-Control-In-Autonomous-Driving"><a href="#Intention-Estimation-For-Ramp-Merging-Control-In-Autonomous-Driving" class="headerlink" title="* Intention Estimation For Ramp Merging Control In Autonomous Driving"></a>* Intention Estimation For Ramp Merging Control In Autonomous Driving</h1><p>CMU，汇车</p>
+<p>cooperative driving behaviour在ramp merging, lane changing, navigation intersections很重要。本文在没有车间通信的条件下利用最新的基于学习的方法来估计车辆意图然后在ramp merging场景中与他们进行交互。</p>
+<ul>
+<li><strong>Probabilistic Graphical Model</strong> (PGM)用来估计驾驶意图，利用历史数据跟横向意图。</li>
+<li>不要周车的加速度信息</li>
+</ul>
+<h1 id="Driving-Strategy-Selection-for-Cooperative-Vehicles-using-Maneuver-Templates"><a href="#Driving-Strategy-Selection-for-Cooperative-Vehicles-using-Maneuver-Templates" class="headerlink" title="Driving Strategy Selection for Cooperative Vehicles using Maneuver Templates"></a>Driving Strategy Selection for Cooperative Vehicles using Maneuver Templates</h1><h1 id="Non-local-Social-Pooling-for-Vehicle-Trajectory-Prediction"><a href="#Non-local-Social-Pooling-for-Vehicle-Trajectory-Prediction" class="headerlink" title="Non-local Social Pooling for Vehicle Trajectory Prediction"></a>Non-local Social Pooling for Vehicle Trajectory Prediction</h1><p>本文提出一种新的方法来预测周车的运动在高速公路场景。基于LSTM encoder-decoder用一个social pooling mechanism来对所有周车的交互进行建模，本文的特点是联合了局部与非局部的操作。并在两个真实的数据集上进行了实验：</p>
+<ul>
+<li>Next Generation Simulation (NGSIM)</li>
+<li>the new highD Dataset</li>
+</ul>
+<p><strong>方法：</strong></p>
+<p>non-local multi-head attention mechanism + convolution layers来抓取每个相邻车辆的信息来预测目标车辆的运动，不管距离有多近。</p>
+<p><strong>总结：</strong></p>
+<ul>
+<li>未来用于非均匀混合交通场景，有多种交通参与者：公交、卡车、汽车、自行车、行人</li>
+</ul>
+<h1 id="Multi-Vehicle-Trajectory-Coordination-for-Automated-Parking"><a href="#Multi-Vehicle-Trajectory-Coordination-for-Automated-Parking" class="headerlink" title="Multi Vehicle Trajectory Coordination for Automated Parking"></a>Multi Vehicle Trajectory Coordination for Automated Parking</h1><p>本文作者观点是停车场是AV落地的首要选择，该场景内车以低速行驶，严格的结构化环境，没有Car2X通信。</p>
+<ul>
+<li>最优轨迹是通过混合整数线性规划得到</li>
+<li>停车场内是多车，并不是单车，可以是混合场景，既有自动驾驶的车也有人类驾驶车</li>
+<li>本文在两个仿真场景中进行展示</li>
+</ul>
+<h1 id="Estimation-of-Collective-Maneuvers-through-Cooperative-Multi-Agent-Planning"><a href="#Estimation-of-Collective-Maneuvers-through-Cooperative-Multi-Agent-Planning" class="headerlink" title="Estimation of Collective Maneuvers through Cooperative Multi-Agent Planning"></a>Estimation of Collective Maneuvers through Cooperative Multi-Agent Planning</h1><p>本文利用贝叶斯估计来得到观察对象的真实运动情况，提出的方法在对向车道有来车的场景和十字路口的汇车场景中进行了模拟实验。</p>
+<p>本文提出的贝叶斯协同操作估计框架基于轨迹同伦（trajectory homotopy）多智能体规划。</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IV2019论文"><span class="toc-text">IV2019论文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Decision-Making-for-Autonomous-Driving-considering-Interaction-and-Uncertain-Prediction-of-Surrounding-Vehicles"><span class="toc-text">Decision Making for Autonomous Driving considering Interaction and Uncertain Prediction of Surrounding Vehicles</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Optimization-based-Tactical-Behavior-Planning-for-Autonomous-Freeway-Driving-in-Favor-of-the-Traffic-Flow"><span class="toc-text">Optimization-based Tactical Behavior Planning for Autonomous Freeway Driving in Favor of the Traffic Flow</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Predictive-Trajectory-Planning-in-Situations-with-Hidden-Road-Users-Using-Partially-Observable-Markov-Decision-Processes"><span class="toc-text">Predictive Trajectory Planning in Situations with Hidden Road Users Using Partially Observable Markov Decision Processes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cooperative-Multi-Vehicle-Behavior-Coordination-for-Autonomous-Driving"><span class="toc-text">* Cooperative Multi-Vehicle Behavior Coordination for Autonomous Driving</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-Controller-Architecture-for-Reliable-Autonomous-Vehicle-Navigation-Combination-of-Model-Driven-and-Data-Driven-Formalization"><span class="toc-text">Multi-Controller Architecture for Reliable Autonomous Vehicle Navigation: Combination of Model-Driven and Data-Driven Formalization</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Trajectory-Planning-for-Automated-Vehicles-in-Overtaking-Scenarios"><span class="toc-text">Trajectory Planning for Automated Vehicles in Overtaking Scenarios</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Learning-Interaction-Aware-Probabilistic-Driver-Behavior-Models-from-Urban-Scenarios"><span class="toc-text">* Learning Interaction-Aware Probabilistic Driver Behavior Models from　Urban Scenarios</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Behavior-Planning-of-Autonomous-Cars-with-Social-Perception"><span class="toc-text">Behavior Planning of Autonomous Cars with Social Perception</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Large-Scale-extraction-of-accurate-vehicle-trajectories-for-driving-behavior-learning"><span class="toc-text">Large-Scale extraction of accurate vehicle trajectories for driving behavior learning</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Intention-Estimation-For-Ramp-Merging-Control-In-Autonomous-Driving"><span class="toc-text">* Intention Estimation For Ramp Merging Control In Autonomous Driving</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Driving-Strategy-Selection-for-Cooperative-Vehicles-using-Maneuver-Templates"><span class="toc-text">Driving Strategy Selection for Cooperative Vehicles using Maneuver Templates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Non-local-Social-Pooling-for-Vehicle-Trajectory-Prediction"><span class="toc-text">Non-local Social Pooling for Vehicle Trajectory Prediction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-Vehicle-Trajectory-Coordination-for-Automated-Parking"><span class="toc-text">Multi Vehicle Trajectory Coordination for Automated Parking</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Estimation-of-Collective-Maneuvers-through-Cooperative-Multi-Agent-Planning"><span class="toc-text">Estimation of Collective Maneuvers through Cooperative Multi-Agent Planning</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 吴亚</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://AIwuya.github.io/passages/轨迹预测调研/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/POMDP/"><i class="fa fa-tags"></i>POMDP</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      <div class="site-comment-contanier">
+  <p id="site-comment-info">
+    <i class="fa fa-spinner fa-spin"></i> 评论加载中
+  </p>
+  <div id="site-comment">
+  </div>
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://morvanzhou.github.io/" target="_blank">莫烦PYTHON</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://spinningup.openai.com/en/latest/index.html" target="_blank">OpenAI in Deep RL</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://www.zhihu.com/people/xiao-ya-84-95/activities" target="_blank">知乎</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: wuya_93@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https:/godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/wechat.png" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/alipay.jpg" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/ROS学习笔记/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/关于attention/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+      <script src="/script.js"></script>
+<script src="/script2.js"></script>
+    
+  </body>
+</html>

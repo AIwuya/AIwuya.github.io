@@ -82,17 +82,17 @@
   <div class="site-header-right">
     <nav class="site-header-navigation">
       
-        <a href="/" target="_self">首页</a>
+        <a href="/" target="_self">HOME PAGE</a>
       
-        <a href="/archives/" target="_self">归档</a>
+        <a href="/archives/" target="_self">ARCHIVES</a>
       
-        <a href="/tags/" target="_self">标签</a>
+        <a href="/tags/" target="_self">TAGS</a>
       
-        <a href="/categories/" target="_self">分类</a>
+        <a href="/categories/" target="_self">CATEGORIES</a>
       
-        <a href="/friends/" target="_self">友链</a>
+        <a href="/friends/" target="_self">FRIENDS</a>
       
-        <a href="/about/" target="_self">关于</a>
+        <a href="/about/" target="_self">ABOUT</a>
       
     </nav>
     <div class="site-header-btn">
@@ -119,37 +119,37 @@
       
         <li class="toc-item">
           <a href="/" target="_self">
-            首页
+            HOME PAGE
           </a>
         </li>
       
         <li class="toc-item">
           <a href="/archives/" target="_self">
-            归档
+            ARCHIVES
           </a>
         </li>
       
         <li class="toc-item">
           <a href="/tags/" target="_self">
-            标签
+            TAGS
           </a>
         </li>
       
         <li class="toc-item">
           <a href="/categories/" target="_self">
-            分类
+            CATEGORIES
           </a>
         </li>
       
         <li class="toc-item">
           <a href="/friends/" target="_self">
-            友链
+            FRIENDS
           </a>
         </li>
       
         <li class="toc-item">
           <a href="/about/" target="_self">
-            关于
+            ABOUT
           </a>
         </li>
       
@@ -284,6 +284,73 @@
 </ul>
 </li>
 </ul>
+<h1 id="邱锡鹏《神经网络与深度学习》"><a href="#邱锡鹏《神经网络与深度学习》" class="headerlink" title="邱锡鹏《神经网络与深度学习》"></a>邱锡鹏《神经网络与深度学习》</h1><h2 id="第一章-绪论-1"><a href="#第一章-绪论-1" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h2><p>深度学习目前需要解决的关键问题是<em>贡献度分配问题</em>（Credit Assignment Problem, CAP）。</p>
+<p>将输入信息转换为有效的<strong>特征</strong>，也称为<strong>表示</strong>。</p>
+<p>目前深度学习模型主要是神经网络模型，这是因为神经网络模型可以使用误差反向传播算法，可以比较好的解决贡献度分配问题。</p>
+<p>超过一层的神经网络都可以看作是深度学习模型。</p>
+<p>所谓<strong>深度</strong>就是指原始数据进行非线性特征转换的次数，深度学习是机器学习的一个子问题，其主要目的是从数据中自动学习到有效的特征表示。</p>
+<p><img src="C:\Users\wuya\AppData\Roaming\Typora\typora-user-images\1566470614273.png" alt="1566470614273"></p>
+<p>特征转换：主成分分析PCA，线性判别分析</p>
+<ul>
+<li>降维<ul>
+<li>特征抽取feature extraction</li>
+<li>特征选择feature selection</li>
+</ul>
+</li>
+<li>升维</li>
+</ul>
+<h2 id="第二章-机器学习概述"><a href="#第二章-机器学习概述" class="headerlink" title="第二章 机器学习概述"></a>第二章 机器学习概述</h2><h3 id="2-1-基本概念"><a href="#2-1-基本概念" class="headerlink" title="2.1 基本概念"></a>2.1 基本概念</h3><p>样本：标记好特征及标签</p>
+<p>数据集：一组样本构成</p>
+<h3 id="2-2-机器学习三个基本要素"><a href="#2-2-机器学习三个基本要素" class="headerlink" title="2.2 机器学习三个基本要素"></a>2.2 机器学习三个基本要素</h3><h4 id="2-2-1-模型"><a href="#2-2-1-模型" class="headerlink" title="2.2.1 模型"></a>2.2.1 模型</h4><p>​    由于我们不知道真实的映射函数g(x)或条件概率分布pr(y|x)的具体形式，只能根据经验来确定一个假设函数集合F，称为<strong>假设空间</strong> （hypothesis space），然后通过观测其在训练集D 上的特性，从中选择一个理想的假设（hypothesis）f∗ ∈ F。</p>
+<ul>
+<li>线性模型</li>
+<li>非线性模型</li>
+</ul>
+<h4 id="2-2-2-学习准则"><a href="#2-2-2-学习准则" class="headerlink" title="2.2.2 学习准则"></a>2.2.2 学习准则</h4><ul>
+<li><p>损失函数：一个非负实数函数，用来量化模型预测和真实标签之间的差异。一般损失函数都是连续可微的</p>
+</li>
+<li><p>经验风险（Empirical Risk）：训练集上的平均损失</p>
+<ul>
+<li>经验风险最小化准则（Empirical Risk Minimization，ERM），经验风险最小化原则很容易导致模型在训练集上错误率很低，但是在未知数据上错误率很高，这就是所谓的<strong>过拟合</strong> （Overfitting）。</li>
+<li>结构风险最小化准则（Structure Risk Minimization, SRM），在经验风险最小化的基础上引入参数的<strong>正则化</strong> （regularization），来限制模型能力，使其不要过度地最小化经验风险。</li>
+</ul>
+<p>欠拟合（underfitting）：模型不能很好的拟合训练数据，在训练集的错误率比较高，由于模型的能力不足造成的。</p>
+<p>防止过拟合的方法：</p>
+<ol>
+<li>正则化</li>
+<li>提前停止（early stop）：每次迭代时，把新得到的模型$f(x,\theta)$ 在验证集（validation set）上进行测试，并计算错误率。如果在验证集上错误率不再下降，就停止迭代。</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-2-3-优化算法"><a href="#2-2-3-优化算法" class="headerlink" title="2.2.3 优化算法"></a>2.2.3 优化算法</h4><p>不同机器学习算法的区别在于模型、学习准则（损失函数）和优化算法的差异。</p>
+<ul>
+<li><p>批量梯度下降法（Batch Gradient Descent, BGD）</p>
+<ul>
+<li>每次迭代的优化目标为所有样本的平均损失函数</li>
+</ul>
+</li>
+<li><p>随机梯度下降法（Stochastic Gradient Descent, SGD）</p>
+<ul>
+<li>每次迭代的优化目标为单个样本的损失函数</li>
+</ul>
+</li>
+<li><p>小批量梯度下降法（Mini-Batch Gradient Descent）</p>
+<ul>
+<li>每次迭代时，随机选取小部分训练样本来计算梯度并更新参数</li>
+</ul>
+</li>
+</ul>
+<h1 id="易混淆概念"><a href="#易混淆概念" class="headerlink" title="易混淆概念"></a>易混淆概念</h1><h2 id="1-神经网络中Epoch、Iteration、Batchsize的相关理解和思考"><a href="#1-神经网络中Epoch、Iteration、Batchsize的相关理解和思考" class="headerlink" title="1. 神经网络中Epoch、Iteration、Batchsize的相关理解和思考"></a>1. 神经网络中Epoch、Iteration、Batchsize的相关理解和思考</h2><p>参考链接<a href="https://blog.csdn.net/program_developer/article/details/78597738" target="_blank" rel="noopener">https://blog.csdn.net/program_developer/article/details/78597738</a></p>
+<h3 id="Batchsize"><a href="#Batchsize" class="headerlink" title="Batchsize"></a>Batchsize</h3><p>批大小，决定我们一次训练的样本数目，影响模型的优化程度和速度。</p>
+<p>在内存效率和内存容量之间寻找最佳平衡</p>
+<h3 id="Iteration"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration</h3><p>迭代</p>
+<p>每一次迭代得到的结果都会作为下一次迭代的初始值</p>
+<p>一个迭代=一个正向通过+一个反向通过</p>
+<h3 id="Epoch"><a href="#Epoch" class="headerlink" title="Epoch"></a>Epoch</h3><p>时期</p>
+<p>一个时期=所有训练样本的一个正向传递和一个方向传递</p>
+<p><strong>深度学习中经常看到epoch、iteration和batchsize，下面按照自己的理解说说这三个区别：</strong></p>
+<p>（1）batchsize：批大小。在深度学习中，一般采用SGD训练，即每次训练在训练集中取batchsize个样本训练；<br>（2）iteration：1个iteration等于使用batchsize个样本训练一次；<br>（3）epoch：1个epoch等于使用训练集中的全部样本训练一次；</p>
+<p>举个例子，训练集有1000个样本，batchsize=10，那么：<br>训练完整个样本集需要：100次iteration，1次epoch。</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -292,7 +359,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-绪论"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-神经网络"><span class="toc-text">第二章 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-M-P模型"><span class="toc-text">2.2 M-P模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-感知器"><span class="toc-text">2.3 感知器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-多层感知器（multilayer-perception）"><span class="toc-text">2.4 多层感知器（multilayer perception）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-误差函数和激活函数"><span class="toc-text">2.6 误差函数和激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-随机梯度下降法"><span class="toc-text">2.8 随机梯度下降法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-学习率"><span class="toc-text">2.9 学习率</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三章-卷积神经网络"><span class="toc-text">第三章 卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-卷积神经网络的结构"><span class="toc-text">3.1 卷积神经网络的结构</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-绪论"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-神经网络"><span class="toc-text">第二章 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-M-P模型"><span class="toc-text">2.2 M-P模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-感知器"><span class="toc-text">2.3 感知器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-多层感知器（multilayer-perception）"><span class="toc-text">2.4 多层感知器（multilayer perception）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-误差函数和激活函数"><span class="toc-text">2.6 误差函数和激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-随机梯度下降法"><span class="toc-text">2.8 随机梯度下降法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-学习率"><span class="toc-text">2.9 学习率</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三章-卷积神经网络"><span class="toc-text">第三章 卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-卷积神经网络的结构"><span class="toc-text">3.1 卷积神经网络的结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#邱锡鹏《神经网络与深度学习》"><span class="toc-text">邱锡鹏《神经网络与深度学习》</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一章-绪论-1"><span class="toc-text">第一章 绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-机器学习概述"><span class="toc-text">第二章 机器学习概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-基本概念"><span class="toc-text">2.1 基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-机器学习三个基本要素"><span class="toc-text">2.2 机器学习三个基本要素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-模型"><span class="toc-text">2.2.1 模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-学习准则"><span class="toc-text">2.2.2 学习准则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-优化算法"><span class="toc-text">2.2.3 优化算法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#易混淆概念"><span class="toc-text">易混淆概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-神经网络中Epoch、Iteration、Batchsize的相关理解和思考"><span class="toc-text">1. 神经网络中Epoch、Iteration、Batchsize的相关理解和思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Batchsize"><span class="toc-text">Batchsize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iteration"><span class="toc-text">Iteration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Epoch"><span class="toc-text">Epoch</span></a></li></ol></li></ol></li></ol>
   </div>
 </aside>
   
